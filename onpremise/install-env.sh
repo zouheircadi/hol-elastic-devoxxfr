@@ -14,25 +14,49 @@ mkdir -p $HOME/elastic/downloads ; cd $HOME/elastic
 
 
 # Installation Elastic
-wget https://artifacts.elastic.co/downloads/elasticsearch/$ELASTIC_BIN
-mkdir $HOME/elastic/search ; tar -xvf $ELASTIC_BIN -C $HOME/elastic/search
-mv $HOME/elastic/search/elasticsearch-$VERSION $HOME/elastic/search/$VERSION
-mv $HOME/elastic/$ELASTIC_BIN $HOME/elastic/downloads/$ELASTIC_BIN
+if [ -f "$HOME/elastic/downloads/$ELASTIC_BIN" ]
+then
+  echo "$file found."
+  mkdir $HOME/elastic/search ; tar -xvf $HOME/elastic/downloads/$ELASTIC_BIN -C $HOME/elastic/search
+  mv $HOME/elastic/search/elasticsearch-$VERSION $HOME/elastic/search/$VERSION
+else
+  echo "$file not found."
+  wget https://artifacts.elastic.co/downloads/elasticsearch/$ELASTIC_BIN
+  mkdir $HOME/elastic/search ; tar -xvf $ELASTIC_BIN -C $HOME/elastic/search
+  mv $HOME/elastic/search/elasticsearch-$VERSION $HOME/elastic/search/$VERSION
+  mv $HOME/elastic/$ELASTIC_BIN $HOME/elastic/downloads/$ELASTIC_BIN  
+fi
 
 # Installation Kibana
 OS="`uname`"
 case $OS in
   'Linux')
-     wget https://artifacts.elastic.co/downloads/kibana/$KIBANA_LINUX_BIN
-     mkdir $HOME/elastic/kibana ; tar -xvf $KIBANA_LINUX_BIN -C $HOME/elastic/kibana
-     mv $HOME/elastic/kibana/$KIBANA_MACOS_FOLDER $HOME/elastic/kibana/$VERSION
-     mv $HOME/elastic/$KIBANA_LINUX_BIN $HOME/elastic/downloads/$KIBANA_LINUX_BIN     
+     if [ -f "$HOME/elastic/downloads/$KIBANA_LINUX_BIN" ]
+     then
+       echo "file found."
+       mkdir $HOME/elastic/kibana ; tar -xvf $HOME/elastic/downloads/$KIBANA_LINUX_BIN -C $HOME/elastic/kibana
+       mv $HOME/elastic/kibana/$KIBANA_MACOS_FOLDER $HOME/elastic/kibana/$VERSION
+     else
+       echo "file not found."
+       wget https://artifacts.elastic.co/downloads/kibana/$KIBANA_LINUX_BIN
+       mkdir $HOME/elastic/kibana ; tar -xvf $KIBANA_LINUX_BIN -C $HOME/elastic/kibana
+       mv $HOME/elastic/kibana/$KIBANA_MACOS_FOLDER $HOME/elastic/kibana/$VERSION
+       mv $HOME/elastic/$KIBANA_LINUX_BIN $HOME/elastic/downloads/$KIBANA_LINUX_BIN     
+     fi
     ;;
   'Darwin')
-     wget https://artifacts.elastic.co/downloads/kibana/$KIBANA_MACOS_BIN
-     mkdir $HOME/elastic/kibana ; tar -xvf $KIBANA_MACOS_BIN -C $HOME/elastic/kibana
-     mv $HOME/elastic/kibana/$KIBANA_MACOS_FOLDER $HOME/elastic/kibana/$VERSION
-     mv $HOME/elastic/$KIBANA_MACOS_BIN $HOME/elastic/downloads/$KIBANA_MACOS_BIN     
+     if [ -f "$HOME/elastic/downloads/$KIBANA_MACOS_BIN" ]
+     then
+       echo "file found."
+       mkdir $HOME/elastic/kibana ; tar -xvf $HOME/elastic/downloads/$KIBANA_MACOS_BIN -C $HOME/elastic/kibana
+       mv $HOME/elastic/kibana/$KIBANA_MACOS_FOLDER $HOME/elastic/kibana/$VERSION
+     else
+       echo "file not found."
+       wget https://artifacts.elastic.co/downloads/kibana/$KIBANA_MACOS_BIN
+       mkdir $HOME/elastic/kibana ; tar -xvf $KIBANA_MACOS_BIN -C $HOME/elastic/kibana
+       mv $HOME/elastic/kibana/$KIBANA_MACOS_FOLDER $HOME/elastic/kibana/$VERSION
+       mv $HOME/elastic/$KIBANA_MACOS_BIN $HOME/elastic/downloads/$KIBANA_MACOS_BIN     
+     fi
     ;;
   *) ;;
 esac
@@ -40,9 +64,17 @@ esac
 
 
 # Installation logstash
-wget https://artifacts.elastic.co/downloads/logstash/$LOGSTASH_BIN
-mkdir $HOME/elastic/logstash ; tar -xvf $LOGSTASH_BIN -C $HOME/elastic/logstash
-mv $HOME/elastic/logstash/logstash-$VERSION $HOME/elastic/logstash/$VERSION
-mv $HOME/elastic/$LOGSTASH_BIN $HOME/elastic/downloads/$LOGSTASH_BIN
+if [ -f "$HOME/elastic/downloads/$LOGSTASH_BIN" ]
+then
+  echo "file found."
+  mkdir $HOME/elastic/logstash ; tar -xvf $HOME/elastic/downloads/$LOGSTASH_BIN -C $HOME/elastic/logstash
+  mv $HOME/elastic/logstash/logstash-$VERSION $HOME/elastic/logstash/$VERSION
+else
+  echo "file not found."
+  wget https://artifacts.elastic.co/downloads/logstash/$LOGSTASH_BIN
+  mkdir $HOME/elastic/logstash ; tar -xvf $LOGSTASH_BIN -C $HOME/elastic/logstash
+  mv $HOME/elastic/logstash/logstash-$VERSION $HOME/elastic/logstash/$VERSION
+  mv $HOME/elastic/$LOGSTASH_BIN $HOME/elastic/downloads/$LOGSTASH_BIN
+fi
 
 export ELK_HOME=$HOME/elastic
