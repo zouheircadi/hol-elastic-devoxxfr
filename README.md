@@ -1,6 +1,7 @@
 # Hand On Lab Devoxx France 2019-04
 ## Gestion des index
 ### Autocréation d’index
+
 Créer un index par injection de données
 ```shell
 POST hol_devoxxfr_11/_doc/_bulk
@@ -17,4 +18,61 @@ POST hol_devoxxfr_11/_doc/_bulk
 { "index": { "_id": 6 }}      
 { "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}
 ```
+
+
+Afficher les caractéristiques de l’index nouvellement créé
+```shell
+GET /hol_devoxxfr_11
+```
+
+
+Résultat de sortie
+```json
+{
+  "hol_devoxxfr_11" : {
+    "aliases" : { },
+    "mappings" : {
+      "_doc" : {
+        "properties" : {
+          "app_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "category" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "last_updated" : {
+            "type" : "date"
+          },
+          "rating" : {
+            "type" : "float"
+          }
+        }
+      }
+    },
+    "settings" : {
+      "index" : {
+        "creation_date" : "1552151784965",
+        "number_of_shards" : "1",
+        "number_of_replicas" : "0",
+        "uuid" : "RlpqvoPbSjWypA7NVROtVw",
+        "version" : {
+          "created" : "6060099"
+        },
+        "provided_name" : "hol_devoxxfr_11"
+      }
+    }
+  }
+}
 
