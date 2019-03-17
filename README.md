@@ -3,14 +3,27 @@
 ### 3.3 Recherches multichamps - un texte commun à tous les champs
 
 
-###### Recherches de type booléen
+##### 3.1.1
 
 ```shell      
-
+GET  hol_devoxxfr_gstore_320/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match": {"app_name": "draw art"}},
+        {"match": {"genres": "draw art"}}
+      ]  
+    }
+  }
+}
 ```
 
 
-###### Effets de bord du mode précédent
+##### 3.1.1 Effets de bord du mode précédent
 
 ```shell      
 
