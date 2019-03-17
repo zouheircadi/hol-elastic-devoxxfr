@@ -1,78 +1,26 @@
 # Hand On Lab Devoxx France 2019-04
 ## Gestion des index
-### Autocréation d’index
+### 1.2 Création template
 
-Créer un index par injection de données
+
 ```shell
-POST hol_devoxxfr_11/_doc/_bulk
-{ "index": { "_id": 1 }}
-{"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
-{ "index": { "_id": 2 }}
-{ "app_name" : "YouTube Kids", "category" : "FAMILY", "last_updated" : "2018-08-02", "rating" : 4.5}
-{ "index": { "_id": 3 }}      
-{ "app_name" : "Block Puzzle Classic Legend !","category" : "GAME", "last_updated" : "2018-07-22", "rating" : 4.7}
-{ "index": { "_id": 4 }}      
-{ "app_name" : "Marble Woka Woka 2018 - Bubble Shooter Match 3", "category" : "GAME", "last_updated" : "2018-08-02","rating" : 4.6}
-{ "index": { "_id": 5 }}      
-{ "app_name" : "QR Code Reader", "category" : "TOOLS", "last_updated" : "2016-03-15", "rating" : 4.0}
-{ "index": { "_id": 6 }}      
-{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}
-```
-
-
-Afficher les caractéristiques de l’index nouvellement créé
-```shell
-GET /hol_devoxxfr_11
-```
-
-
-Résultat de sortie
-```json
+PUT /_template/template_hol_dvxfr
 {
-  "hol_devoxxfr_11" : {
-    "aliases" : { },
-    "mappings" : {
-      "_doc" : {
-        "properties" : {
-          "app_name" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "category" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
-          },
-          "last_updated" : {
-            "type" : "date"
-          },
-          "rating" : {
-            "type" : "float"
-          }
-        }
-      }
-    },
-    "settings" : {
-      "index" : {
-        "creation_date" : "1552151784965",
-        "number_of_shards" : "1",
-        "number_of_replicas" : "0",
-        "uuid" : "RlpqvoPbSjWypA7NVROtVw",
-        "version" : {
-          "created" : "6060099"
-        },
-        "provided_name" : "hol_devoxxfr_11"
-      }
-    }
+  "index_patterns": ["hol_devoxxfr*"],
+  "settings": 
+  {
+    "number_of_shards" : 1,
+    "number_of_replicas" : 0   
   }
 }
+```
 
+Le template comprendra 2 parties
+* Index patterns : tableau avec l’expression régulière suivante : hol_devoxxfr* 
+* Settings
+    * Nombre de shards : 1
+    * Nombre de replicas : 0
+
+Tous les index dont le nom commencera par hol_devoxxfr auront 1 shard et zéro réplicas
+
+[Allez plus loin](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html)
