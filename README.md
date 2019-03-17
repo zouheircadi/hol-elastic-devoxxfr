@@ -63,10 +63,10 @@ Résultat de sortie
     },
     "settings" : {
       "index" : {
-        "creation_date" : "1552151784965",
-        "number_of_shards" : "1",
-        "number_of_replicas" : "0",
-        "uuid" : "RlpqvoPbSjWypA7NVROtVw",
+        "creation_date" : "1552820707231",
+        "number_of_shards" : "5",
+        "number_of_replicas" : "1",
+        "uuid" : "9su2-VrDSkuIY0eBtEB55A",
         "version" : {
           "created" : "6060099"
         },
@@ -75,4 +75,4 @@ Résultat de sortie
     }
   }
 }
-
+```
