@@ -1,10 +1,11 @@
 # Hand On Lab Devoxx France 2019-04
 ## Gestion des index
-### 1.1 Autocréation d’index
+### 1.3 Creation d’un index sur la base d’un template
 
-Créer un index par injection de données
+Créer un index par injection de données avec le POST ci-dessous. L’index créé devrait logiquement avoir les caractéristiques définies dans le template
+      
 ```shell
-POST hol_devoxxfr_11/_doc/_bulk
+POST /hol_devoxxfr_13/_doc/_bulk
 { "index": { "_id": 1 }}
 {"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
 { "index": { "_id": 2 }}
@@ -20,16 +21,16 @@ POST hol_devoxxfr_11/_doc/_bulk
 ```
 
 
-Afficher les caractéristiques de l’index nouvellement créé
+Vérifier que l’index nouvellement créé possède bien les caractéristiques définis dans le template (un seul shard et zéro replica)
 ```shell
-GET /hol_devoxxfr_11
+GET /hol_devoxxfr_13
 ```
 
 
 Résultat de sortie
 ```json
 {
-  "hol_devoxxfr_11" : {
+  "hol_devoxxfr_13" : {
     "aliases" : { },
     "mappings" : {
       "_doc" : {
@@ -63,16 +64,16 @@ Résultat de sortie
     },
     "settings" : {
       "index" : {
-        "creation_date" : "1552151784965",
+        "creation_date" : "1552152736309",
         "number_of_shards" : "1",
         "number_of_replicas" : "0",
-        "uuid" : "RlpqvoPbSjWypA7NVROtVw",
+        "uuid" : "0y7MR1CVQnOs3NgQiZFGUA",
         "version" : {
           "created" : "6060099"
         },
-        "provided_name" : "hol_devoxxfr_11"
+        "provided_name" : "hol_devoxxfr_13"
       }
     }
   }
 }
-
+```
