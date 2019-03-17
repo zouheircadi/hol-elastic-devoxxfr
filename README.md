@@ -27,6 +27,24 @@ GET  hol_devoxxfr_gstore_320/_search
 
 
 ##### 3.1.2 Effets de bord du mode précédent
+
+On recherche les tokens "draw art" dans les documents ci-dessous
+
+| header 1 | header 2 | header 2 |
+| -------- | -------- |
+| cell 1   | cell 2   | cell 2   |
+| cell 3   | cell 4   | cell 2   |
+
+```json
+{ "index": { "_id": 1 }}
+{"app_name" : "draw pixel art number", "genres" : "Art & Design;Creativity"}
+{ "index": { "_id": 2 }}
+{"app_name" : "draw pixel number", "genres" : "Art & Design"}
+{ "index": { "_id": 3 }}
+{"app_name" : "draw figure", "genres" : "Art & Design"}
+```
+
+
 Les tokens draw et art sont présents
 * Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
 * Pour le document d’identifiant 2, art est présent dans le champ genres et draw est présent dans le champ app_name. Le mode de calcul de la pertinence lui attribue  ainsi un score plus élevé.
