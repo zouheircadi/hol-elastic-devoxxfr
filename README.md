@@ -15,8 +15,6 @@ POST hol_devoxxfr_11/_doc/_bulk
 { "index": { "_id": 5 }}      
 { "app_name" : "QR Code Reader", "category" : "TOOLS", "last_updated" : "2016-03-15", "rating" : 4.0}
 { "index": { "_id": 6 }}      
-{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}      
-
-print s
+{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}
 ```
 
