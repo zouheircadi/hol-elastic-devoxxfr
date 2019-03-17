@@ -3,7 +3,10 @@
 ### 3.3 Recherches multichamps - un texte commun à tous les champs
 
 
-##### 3.1.1
+##### 3.1.1 Recherches de type booléen
+* Trouver les documents qui contiennent
+    * "draw art" dans le champ app_name
+    * "draw art" dans le champ genres
 
 ```shell      
 GET  hol_devoxxfr_gstore_320/_search
@@ -23,40 +26,54 @@ GET  hol_devoxxfr_gstore_320/_search
 ```
 
 
-##### 3.1.1 Effets de bord du mode précédent
+##### 3.1.2 Effets de bord du mode précédent
+Les tokens draw et art sont présents
+* Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
+* Pour le document d’identifiant 2, art est présent dans le champ genres et draw est présent dans le champ app_name. Le mode de calcul de la pertinence lui attribue  ainsi un score plus élevé.
+
+On peut ne pas se satisfaire de ce mode de calcul. Comment faire pour que les champs qui contiennent le plus de mots recherchés remontent mieux ? La réponse est dans l’exercice suivant.
+
+
+###### 3.1.3 Recherches de type Dismax
+
+
+
+###### 3.1.4 Recherches de type Dismax  - effet de bord
+
+
+
+###### 3.1.5 Recherches de type Dismax  avec tiebreaker
+
+
+
+###### 3.1.6 Comprendre le score du mode Dismax
 
 ```shell      
-
+GET /hol_devoxxfr_gstore_323/_search?explain=true
+{
+  "query": 
+  {
+    "dis_max": {
+      "queries": 
+      [
+        {"match": {"genres": "entertainment art"}},
+        {"match": {"app_name": "entertainment art"}}        
+      ],
+      "tie_breaker": 0.0
+    }
+  }
+}
 ```
 
+* 0.88960975 = 
+    * 0,6931472 => le tie_breaker ne s'applique pas au champ dont le score est le plus élevé
+    *    (+) 
+    * (tie_breaker * 0,6548752)  => prise en compte du champ de score plus bas modéré par le tie_breaker
 
-###### Recherches de type Dismax
-
-```shell      
-
-```
-
-
-###### Recherches de type Dismax  - effet de bord
-
-```shell      
-
-```
-
-
-###### Recherches de type Dismax  avec tiebreaker
-
-```shell      
-
-```
-
-
-###### Comprendre le score du mode Dismax
-
-```shell      
-
-```
-
+* Modulation de l'effet tie_breaker 
+    * tie_breaker = 0 : le score du document remonté sera celui du champ dont le score est le plus élevé
+    * tie_breaker = 1 : Suppression de l'effet Dismax 
+    * tie_breaker usuel 0.3 à 0.4
 
 ###### Queries de type Multimatch
 
