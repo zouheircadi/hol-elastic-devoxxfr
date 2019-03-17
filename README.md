@@ -1,7 +1,6 @@
 # Hand On Lab Devoxx France 2019-04
 ## Recherches full-text
 ### 3.1 Recherches sur un champ unique
-#### 3.1.1 Recherches sur un champ unique
 
 
 ###### Match query
