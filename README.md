@@ -3,7 +3,7 @@
 ### 3.3 Recherches multichamps - un texte commun à tous les champs
 
 
-##### 3.1.1 Recherches de type booléen
+##### 3.3.1 Recherches de type booléen
 * Trouver les documents qui contiennent
     * "draw art" dans le champ app_name
     * "draw art" dans le champ genres
@@ -26,14 +26,8 @@ GET  hol_devoxxfr_gstore_320/_search
 ```
 
 
-##### 3.1.2 Effets de bord du mode précédent
-
+##### 3.3.2 Effets de bord du mode précédent
 On recherche les tokens "draw art" dans les documents ci-dessous
-
-| header 1 | header 2 | header 2 |
-| -------- | -------- |
-| cell 1   | cell 2   | cell 2   |
-| cell 3   | cell 4   | cell 2   |
 
 ```json
 { "index": { "_id": 1 }}
@@ -44,7 +38,6 @@ On recherche les tokens "draw art" dans les documents ci-dessous
 {"app_name" : "draw figure", "genres" : "Art & Design"}
 ```
 
-
 Les tokens draw et art sont présents
 * Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
 * Pour le document d’identifiant 2, art est présent dans le champ genres et draw est présent dans le champ app_name. Le mode de calcul de la pertinence lui attribue  ainsi un score plus élevé.
@@ -52,19 +45,19 @@ Les tokens draw et art sont présents
 On peut ne pas se satisfaire de ce mode de calcul. Comment faire pour que les champs qui contiennent le plus de mots recherchés remontent mieux ? La réponse est dans l’exercice suivant.
 
 
-###### 3.1.3 Recherches de type Dismax
+###### 3.3.3 Recherches de type Dismax
 
 
 
-###### 3.1.4 Recherches de type Dismax  - effet de bord
+###### 3.3.4 Recherches de type Dismax  - effet de bord
 
 
 
-###### 3.1.5 Recherches de type Dismax  avec tiebreaker
+###### 3.3.5 Recherches de type Dismax  avec tiebreaker
 
 
 
-###### 3.1.6 Comprendre le score du mode Dismax
+###### 3.3.6 Comprendre le score du mode Dismax
 
 ```shell      
 GET /hol_devoxxfr_gstore_323/_search?explain=true
