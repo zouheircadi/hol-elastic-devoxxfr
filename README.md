@@ -1,6 +1,6 @@
 # Hand On Lab Devoxx France 2019-04
 ## Gestion des index
-### Autocréation d’index
+### 1.1 Autocréation d’index
 
 Créer un index par injection de données
 ```shell
