@@ -9,6 +9,7 @@ KIBANA_LINUX_FOLDER=kibana-${VERSION}-linux-x86_64
 
 LOGSTASH_BIN=logstash-${VERSION}.tar.gz
 
+export ELK_HOME=$HOME/elastic
 
 mkdir -p $HOME/elastic/downloads ; cd $HOME/elastic
 
@@ -76,5 +77,3 @@ else
   mv $HOME/elastic/logstash/logstash-$VERSION $HOME/elastic/logstash/$VERSION
   mv $HOME/elastic/$LOGSTASH_BIN $HOME/elastic/downloads/$LOGSTASH_BIN
 fi
-
-export ELK_HOME=$HOME/elastic
