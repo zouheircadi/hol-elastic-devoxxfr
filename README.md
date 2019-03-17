@@ -1,25 +1,52 @@
 # Hand On Lab Devoxx France 2019-04
 ## Recherches full-text
-### 3.2 Recherches multichamps - un texte spécifique à chaque champ
+### 3.3 Recherches multichamps - un texte commun à tous les champs
 
 
-* Trouver les documents qui contiennent
-    * draw dans le champ app_name
-    * art dans le champ genres
+###### Recherches de type booléen
 
 ```shell      
-GET  hol_devoxxfr_gstore_320/_search
-{
-  "query": 
-  {
-    "bool": 
-    {
-      "should": 
-      [
-        {"match": {"app_name": "draw"}},
-        {"match": {"genres": "art"}}
-      ]  
-    }
-  }
-}
+
+```
+
+
+###### Effets de bord du mode précédent
+
+```shell      
+
+```
+
+
+###### Recherches de type Dismax
+
+```shell      
+
+```
+
+
+###### Recherches de type Dismax  - effet de bord
+
+```shell      
+
+```
+
+
+###### Recherches de type Dismax  avec tiebreaker
+
+```shell      
+
+```
+
+
+###### Comprendre le score du mode Dismax
+
+```shell      
+
+```
+
+
+###### Queries de type Multimatch
+
+```shell      
+
 ```
