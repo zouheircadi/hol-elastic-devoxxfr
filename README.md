@@ -20,11 +20,14 @@ POST /hol_devoxxfr_13/_doc/_bulk
 { "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}
 ```
 
+**Vérifier que l’index nouvellement créé possède bien les caractéristiques définis dans le template (un seul shard et zéro replica)**
 
-Vérifier que l’index nouvellement créé possède bien les caractéristiques définis dans le template (un seul shard et zéro replica)
+Pour créer un index dont la structure obéit à un template, il suffit de respecter l’expression régulière présente dans l’attribut index_pattern utilisée lors de sa création.
+La vérification se fait par une simple requête GET sur l'index nouvellement créé. On contrôle ensuite dans la partie settings que l'index possède bien les caractéristiques définies dans le template.
 ```shell
 GET /hol_devoxxfr_13
 ```
+ 
 
 
 Résultat de sortie
