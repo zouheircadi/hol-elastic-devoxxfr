@@ -1,22 +1,11 @@
 # Hand On Lab Devoxx France 2019-04
 ## Gestion des index
-### 1.4 Création Index avec mapping personnalisé
-
-Créer un index avec les caractéristiques suivantes
-* Nom : hol_devoxxfr_14
-* Dont le mapping est
-    * Type : _doc
-        * Champs
-            * app_name : chaine de caractère analysée
-            * category : chaine de caractère non analysée
-            * last_updated : date
-            * rating : double
+### 1.5 Gestion Alias
 
 
-Indexer les données avec la requête REST ci-dessous
+Créer un premier index en mode autocréation avec la requête ci-dessous
 ```shell
-{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}
-POST / hol_devoxxfr_14/_doc/_bulk
+POST /hol_devoxxfr_151/_doc/_bulk
 { "index": { "_id": 1 }}
 {"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
 { "index": { "_id": 2 }}
@@ -25,10 +14,7 @@ POST / hol_devoxxfr_14/_doc/_bulk
 { "app_name" : "Block Puzzle Classic Legend !","category" : "GAME", "last_updated" : "2018-07-22", "rating" : 4.7}
 { "index": { "_id": 4 }}      
 { "app_name" : "Marble Woka Woka 2018 - Bubble Shooter Match 3", "category" : "GAME", "last_updated" : "2018-08-02","rating" : 4.6}
-{ "index": { "_id": 5 }}      
-{ "app_name" : "QR Code Reader", "category" : "TOOLS", "last_updated" : "2016-03-15", "rating" : 4.0}
-{ "index": { "_id": 6 }}      
-{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}      
+      
 ```
 
 Vérifier que votre index 
