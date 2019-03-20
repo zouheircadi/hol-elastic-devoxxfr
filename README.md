@@ -12,6 +12,24 @@ Créer un index avec les caractéristiques suivantes
             * last_updated : date
             * rating : double
 
+```json
+PUT /hol_devoxxfr_14
+{
+  "mappings": 
+  {
+    "_doc":
+    {
+      "properties": 
+      {
+        "app_name" : {"type": "text"},
+        "category" : {"type": "keyword"},
+        "last_updated" : {"type": "date"},
+        "rating" : {"type": "double"}      
+      }      
+    }
+  }
+}
+```
 
 Indexer les données avec la requête REST ci-dessous
 ```shell
@@ -35,30 +53,48 @@ Vérifier que votre index
 * que le mapping est différent de celui inféré par défaut
 
 
-
-```json
-PUT /hol_devoxxfr_14
-{
-  "mappings": 
-  {
-    "_doc":
-    {
-      "properties": 
-      {
-        "app_name" : {"type": "text"},
-        "category" : {"type": "keyword"},
-        "last_updated" : {"type": "date"},
-        "rating" : {"type": "double"}      
-      }      
-    }
-  }
-}
-```
-
-
 La vérification se fait par une simple requête GET sur l'index nouvellement créé. On contrôle ensuite dans la partie settings que l'index possède bien les caractéristiques définies dans le template et dans le mapping.
 ```shell
 GET /hol_devoxxfr_14
+```
+
+Résultat
+```json
+{
+  "hol_devoxxfr_14" : {
+    "aliases" : { },
+    "mappings" : {
+      "_doc" : {
+        "properties" : {
+          "app_name" : {
+            "type" : "text"
+          },
+          "category" : {
+            "type" : "keyword"
+          },
+          "last_updated" : {
+            "type" : "date"
+          },
+          "rating" : {
+            "type" : "double"
+          }
+        }
+      }
+    },
+    "settings" : {
+      "index" : {
+        "creation_date" : "1552152453624",
+        "number_of_shards" : "1",
+        "number_of_replicas" : "0",
+        "uuid" : "9tX0PEOjQpGXXGEbjPSroQ",
+        "version" : {
+          "created" : "6060099"
+        },
+        "provided_name" : "hol_devoxxfr_14"
+      }
+    }
+  }
+}
 ```
  
 
