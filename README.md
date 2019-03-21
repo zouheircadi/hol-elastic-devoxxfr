@@ -86,8 +86,49 @@ GET /hol_devoxxfr_gstore_323/_search?explain=true
     * tie_breaker = 1 : Suppression de l'effet Dismax 
     * tie_breaker usuel 0.3 à 0.4
 
-###### Queries de type Multimatch
+### 3.1.7 Queries de type Multimatch
 
 ```shell      
-
+GET /hol_devoxxfr_gstore_323/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "type": "best_fields", 
+      "query": "entertainment art",
+      "fields": ["genres","app_name"],
+      "tie_breaker": 0.3
+      
+    }
+  }
+}
 ```
+
+Selon, le type choisi (most_fields ou cross_fields), ce type de requête propose [d’autres fonctionnalités](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html).
+
+### 3.1.8 Multimatch avec pondération de champs
+
+```shell
+GET /hol_devoxxfr_gstore_323/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "query": "entertainment art",
+      "type": "best_fields", 
+      "fields": ["genres^0.3","app_name^4"],
+      "tie_breaker": 0.3
+      
+    }
+  }
+}
+```
+
+La pondération est appelée boost est peut être  
+* égale à un entier naturel positif. Dans ce cas, elle augmentera le score
+* comprise entre 0 et 1. Dans ce cas, elle réduira le score
+
+Il est possible d'appliquer des boosts différents à chaque champ. Dans l'exemple donné, on applique
+* un boost de 4 au champ app_name ce qui augmentera son poids dans le score global du document
+* un boost de 0.3 au champ genres ce qui diminuera son poids dans le score global du document
+
