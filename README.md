@@ -25,6 +25,13 @@ Afficher les caractéristiques de l’index nouvellement créé
 GET /hol_devoxxfr_11
 ```
 
+Si on fait un parallèle avec les bases de données relationnelles, c'est comme si un insert entrainait la création du schéma avec une inférence des types.
+* les chaines de caractères sont mappées simultanément de deux façons dirrérentes
+    * type text : chaine de caractère analysée
+    * type keyword : chaine de caractère stockée sans modification
+* les chaines de caractères qui obéïssent à un template donné sont converties en date
+* ... 
+
 
 Résultat de sortie
 ```json
