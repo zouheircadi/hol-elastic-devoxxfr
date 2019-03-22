@@ -32,6 +32,8 @@ Si on fait un parallèle avec les bases de données relationnelles, c'est comme 
 * les chaines de caractères qui obéïssent à un template donné sont converties en date
 * ... 
 
+Le mode autocréation est autorisé par défaut. Pour l'interdir, il faut passer la propriété action.auto_create_index à false dans le fichier $INSTALL_DIR/config/elasticsearch.yml
+
 
 Résultat de sortie
 ```json
