@@ -1,134 +1,172 @@
 # Hand On Lab Devoxx France 2019-04
 ## Recherches full-text
-### 3.3 Recherches multichamps - un texte commun à tous les champs
+### 3.4 
 
+##### 3.4.1 Création index de travail
 
-##### 3.3.1 Recherches de type booléen
-* Trouver les documents qui contiennent
-    * "draw art" dans le champ app_name
-    * "draw art" dans le champ genres
-
-```shell      
-GET  hol_devoxxfr_gstore_320/_search
-{
-  "query": 
-  {
-    "bool": 
-    {
-      "should": 
-      [
-        {"match": {"app_name": "draw art"}},
-        {"match": {"genres": "draw art"}}
-      ]  
-    }
-  }
-}
+```shell     
+POST /hol_devoxxfr_shingles_342/_doc/_bulk
+{ "index": { "_id": 1 }}
+{ "title": "Je ne suis pas content. Service client nul" }
+{ "index": { "_id": 2 }}
+{ "title": "Je suis content. Pas de retard de livraison" }
+{ "index": { "_id": 3 }}
+{ "title": "Je suis tres content. pas de probleme" }
 ```
 
 
-##### 3.3.2 Effets de bord du mode précédent
-On recherche les tokens "draw art" dans les documents ci-dessous
+##### 3.4.2 Analyse des données indexées
+Si vous avez fait l'exercice 2.1, vous l'avez déjà utilisé. Il s'agit de la requête sur le endpoint _analyze [indiquée en annexe](https://docs.google.com/document/d/1wZqOUP7X6eSZl7jMz7YXJbKT8EkNI30ZxlyYU3vqsCE/edit#heading=h.46n4fb7pm59).
+
+
+```shell     
+GET /hol_devoxxfr_shingles_342/_analyze
+{
+  "field": "app_name",
+  "text" : "Je suis tres content. pas de probleme"
+}
+```
+
+Le résultat donne la position de chaque token. Cette information est donc connue car stockée lors de l'indexation.
 
 ```json
-{ "index": { "_id": 1 }}
-{"app_name" : "draw pixel art number", "genres" : "Art & Design;Creativity"}
-{ "index": { "_id": 2 }}
-{"app_name" : "draw pixel number", "genres" : "Art & Design"}
-{ "index": { "_id": 3 }}
-{"app_name" : "draw figure", "genres" : "Art & Design"}
-```
-
-Les tokens draw et art sont présents
-* Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
-* Pour le document d’identifiant 2, art est présent dans le champ genres et draw est présent dans le champ app_name. Le mode de calcul de la pertinence lui attribue  ainsi un score plus élevé.
-
-On peut ne pas se satisfaire de ce mode de calcul. Comment faire pour que les champs qui contiennent le plus de mots recherchés remontent mieux ? La réponse est dans l’exercice suivant.
-
-
-###### 3.3.3 Recherches de type Dismax
-
-
-
-###### 3.3.4 Recherches de type Dismax  - effet de bord
-
-
-
-###### 3.3.5 Recherches de type Dismax  avec tiebreaker
-
-
-
-###### 3.3.6 Comprendre le score du mode Dismax
-
-```shell      
-GET /hol_devoxxfr_gstore_323/_search?explain=true
 {
-  "query": 
-  {
-    "dis_max": {
-      "queries": 
-      [
-        {"match": {"genres": "entertainment art"}},
-        {"match": {"app_name": "entertainment art"}}        
-      ],
-      "tie_breaker": 0.0
+  "tokens" : [
+    {
+      "token" : "je",
+      "start_offset" : 0,
+      "end_offset" : 2,
+      "type" : "<ALPHANUM>",
+      "position" : 0
+    },
+    {
+      "token" : "suis",
+      "start_offset" : 3,
+      "end_offset" : 7,
+      "type" : "<ALPHANUM>",
+      "position" : 1
+    },
+    {
+      "token" : "tres",
+      "start_offset" : 8,
+      "end_offset" : 12,
+      "type" : "<ALPHANUM>",
+      "position" : 2
+    },
+    {
+      "token" : "content",
+      "start_offset" : 13,
+      "end_offset" : 20,
+      "type" : "<ALPHANUM>",
+      "position" : 3
+    },
+    {
+      "token" : "pas",
+      "start_offset" : 22,
+      "end_offset" : 25,
+      "type" : "<ALPHANUM>",
+      "position" : 4
+    },
+    {
+      "token" : "de",
+      "start_offset" : 26,
+      "end_offset" : 28,
+      "type" : "<ALPHANUM>",
+      "position" : 5
+    },
+    {
+      "token" : "probleme",
+      "start_offset" : 29,
+      "end_offset" : 37,
+      "type" : "<ALPHANUM>",
+      "position" : 6
     }
-  }
+  ]
 }
 ```
 
-* 0.88960975 = 
-    * 0,6931472 => le tie_breaker ne s'applique pas au champ dont le score est le plus élevé
-    *    (+) 
-    * (tie_breaker * 0,6548752)  => prise en compte du champ de score plus bas modéré par le tie_breaker
-
-* Modulation de l'effet tie_breaker 
-    * tie_breaker = 0 : le score du document remonté sera celui du champ dont le score est le plus élevé
-    * tie_breaker = 1 : Suppression de l'effet Dismax 
-    * tie_breaker usuel 0.3 à 0.4
-
-### 3.1.7 Queries de type Multimatch
-
-```shell      
-GET /hol_devoxxfr_gstore_323/_search
-{
-  "query": 
-  {
-    "multi_match": {
-      "type": "best_fields", 
-      "query": "entertainment art",
-      "fields": ["genres","app_name"],
-      "tie_breaker": 0.3
-      
-    }
-  }
-}
-```
-
-Selon, le type choisi (most_fields ou cross_fields), ce type de requête propose [d’autres fonctionnalités](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html).
-
-### 3.1.8 Multimatch avec pondération de champs
+##### 3.4.3
 
 ```shell
-GET /hol_devoxxfr_gstore_323/_search
+GET /hol_devoxxfr_shingles_342/_search
 {
   "query": 
   {
-    "multi_match": {
-      "query": "entertainment art",
-      "type": "best_fields", 
-      "fields": ["genres^0.3","app_name^4"],
-      "tie_breaker": 0.3
-      
+    "match": {
+      "title": "pas content"
     }
   }
 }
 ```
 
-La pondération est appelée boost est peut être  
-* égale à un entier naturel positif. Dans ce cas, elle augmentera le score
-* comprise entre 0 et 1. Dans ce cas, elle réduira le score
+C'est le score des documents retournés qui nous donne une indication de la pertinence des résultats (voir ci-dessous le json simplifié retourné par la requête).
+On constate ainsi que la distinction entre les utilisateurs content et pas content n'est pas bien reflétée par une différence dans le score.
 
-Il est possible d'appliquer des boosts différents à chaque champ. Dans l'exemple donné, on applique
-* un boost de 4 au champ app_name ce qui augmentera son poids dans le score global du document
-* un boost de 0.3 au champ genres ce qui diminuera son poids dans le score global du document
+```json
+{
+  "hits" : [
+    {
+      "_score" : 0.27691346,
+      "_source" : {
+        "title" : "Je suis tres content. pas de probleme"
+      }
+    },
+    {
+      "_score" : 0.26239565,
+      "_source" : {
+        "title" : "Je ne suis pas content. Service client nul"
+      }
+    },
+    {
+      "_score" : 0.26239565,
+      "_source" : {
+        "title" : "Je suis content. Pas de retard de livraison"
+      }
+    }
+  ]
+}
+```
 
+
+
+Requête multimatch avec la chaîne "pas content".
+Cette requête ne retourne qu'un seul document. 
+* Avantage. Elle prend en compte l'ordre qui induit le sens recherché
+* Inconvénient. Elle est trop restricitive
+
+```shell
+Requête multimatch avec la chaîne "pas content"
+GET /hol_devoxxfr_shingles_342/_search
+{
+  "query": 
+  {
+    "match_phrase": 
+    {
+      "title" : "pas content"
+    }
+  }
+}
+```
+
+
+##### 3.4.4 Match phrase avec slop 
+
+```shell
+GET /hol_devoxxfr_shingles_342/_search
+{
+  "query": 
+  {
+    "match_phrase": 
+    {
+      "title" : 
+      {
+        "query": "pas content",
+        "slop" : "2"
+      }
+    }
+  }
+}
+```
+Avec une slop de 2, on trouve tous les documents. Mais le document avec les tokens en bonne position à un score à peu près égal au double de celui des autres documents.
+
+Dans la pratique, on passe souvent en paramètre une slop élevée (entre 50 et 100) de manière trouver à récompenser les documents avec des mots proches de la requêtes et à exclure les documents trop éloignés 
