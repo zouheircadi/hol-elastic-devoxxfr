@@ -1,11 +1,12 @@
 # Hand On Lab Devoxx France 2019-04
 ## Recherches full-text
-### 3.4 
+### 3.4 Proximité
+### 3.4.1 Phrase match
 
-##### 3.4.1 Création index de travail
+##### 3.4.1.1 Création index de travail
 
 ```shell     
-POST /hol_devoxxfr_shingles_342/_doc/_bulk
+POST /hol_devoxxfr_mp1/_doc/_bulk
 { "index": { "_id": 1 }}
 { "title": "Je ne suis pas content. Service client nul" }
 { "index": { "_id": 2 }}
@@ -15,12 +16,12 @@ POST /hol_devoxxfr_shingles_342/_doc/_bulk
 ```
 
 
-##### 3.4.2 Analyse des données indexées
+##### 3.4.1.2 Analyse des données indexées
 Si vous avez fait l'exercice 2.1, vous l'avez déjà utilisé. Il s'agit de la requête sur le endpoint _analyze [indiquée en annexe](https://docs.google.com/document/d/1wZqOUP7X6eSZl7jMz7YXJbKT8EkNI30ZxlyYU3vqsCE/edit#heading=h.46n4fb7pm59).
 
 
 ```shell     
-GET /hol_devoxxfr_shingles_342/_analyze
+GET /hol_devoxxfr_mp1/_analyze
 {
   "field": "app_name",
   "text" : "Je suis tres content. pas de probleme"
@@ -85,10 +86,10 @@ Le résultat donne la position de chaque token. Cette information est donc connu
 }
 ```
 
-##### 3.4.3
+##### 3.4.1.3
 
 ```shell
-GET /hol_devoxxfr_shingles_342/_search
+GET /hol_devoxxfr_mp1/_search
 {
   "query": 
   {
@@ -136,7 +137,7 @@ Cette requête ne retourne qu'un seul document.
 
 ```shell
 Requête multimatch avec la chaîne "pas content"
-GET /hol_devoxxfr_shingles_342/_search
+GET /hol_devoxxfr_mp1/_search
 {
   "query": 
   {
@@ -149,10 +150,10 @@ GET /hol_devoxxfr_shingles_342/_search
 ```
 
 
-##### 3.4.4 Match phrase avec slop 
+##### 3.4.1.4 Match phrase avec slop 
 
 ```shell
-GET /hol_devoxxfr_shingles_342/_search
+GET /hol_devoxxfr_mp1/_search
 {
   "query": 
   {
