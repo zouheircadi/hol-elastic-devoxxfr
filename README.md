@@ -1,12 +1,7 @@
 # Hand On Lab Devoxx France 2019-04
 ### 3.5 Partial matching
-### 3.5.1 Chargement du jeu d’essai
+### 3.5.3 Sans modification de l’indexation : match_phrase_prefix
 
-Le jeu d'essai consiste en une liste de pays tronquée à la lettre F. Le chargement peut se faire de deux manières différentes 
-* Grâce aux DevTools Kibana.
-Copier/Coller dans votre IDE devTools les scripts et exécuter les un après l’autre à partir du fichier post-data-1-devtools.txt
-* shell. 
-Exécuter le shell post-data-1-curl.sh. Il contient les mêmes instructions que le fichier précédent encapsulées dans des commandes Curl
-    * Suppression de l’index hol_devoxxfr_pm1
-    * Création de l’index hol_devoxxfr_pm1 contenant deux champs de type keyword code et country
-    * Ajout des données sur le endpoint bulk
+Le mapping correct vous est fourni dans le fichier shell ./data/post-data-2-curl.sh
+
+Si vous n’avez pas la possibilité d’exécuter un script shell sur votre poste de travail, sachez qu’un copier/coller d’une instruction Curl vers les devTools Kibana transforme automatiquement la commande Curl dans la syntaxe du devTool.
