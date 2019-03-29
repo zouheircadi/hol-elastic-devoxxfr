@@ -29,14 +29,29 @@ GET  hol_devoxxfr_gstore_320/_search
 ##### 3.3.2 Effets de bord du mode précédent
 On recherche les tokens "draw art" dans les documents ci-dessous
 
-```json
+```shell
+POST /hol_devoxxfr_gstore_322/_doc/_bulk
 { "index": { "_id": 1 }}
-{"app_name" : "draw pixel art number", "genres" : "Art & Design;Creativity"}
+{"genres" : "Entertainment", "app_name" : "Pixel Draw Art filter for selfies"}
 { "index": { "_id": 2 }}
-{"app_name" : "draw pixel number", "genres" : "Art & Design"}
-{ "index": { "_id": 3 }}
-{"app_name" : "draw figure", "genres" : "Art & Design"}
+{"genres" : "Art", "app_name" : "Pixel Draw"}
 ```
+
+```json
+GET /hol_devoxxfr_gstore_322/_search
+{
+ "query": {
+   "bool": {
+     "should": [
+       {"match": {"genres": "draw art"}},
+       {"match": {"app_name": "draw art"}}
+     ]
+   }
+ }
+}
+```
+
+
 
 Les tokens draw et art sont présents
 * Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
@@ -47,17 +62,82 @@ On peut ne pas se satisfaire de ce mode de calcul. Comment faire pour que les ch
 
 ###### 3.3.3 Recherches de type Dismax
 
+```json
+GET /hol_devoxxfr_gstore_322/_search
+{
+ "query":
+ {
+   "dis_max": {
+     "queries":
+     [
+       {"match": {"genres": "art draw"}},
+       {"match": {"app_name": "art draw"}}
+     ]
+   }
+ }
+}
+```
 
 
 ###### 3.3.4 Recherches de type Dismax  - effet de bord
+
+```json
+POST /hol_devoxxfr_gstore_323/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"genres" : "Art", "app_name" : "Pixel Draw Number"}
+{ "index": { "_id": 2 }}
+{"genres" : "Entertainment", "app_name" : "Pixel Draw Art number"}
+```
+
+
+
+```json
+GET /hol_devoxxfr_gstore_323/_search
+{
+ "query":
+ {
+   "dis_max": {
+     "queries":
+     [
+       {"match": {"genres": "entertainment art"}},
+       {"match": {"app_name": "entertainment art"}}
+     ]
+   }
+ }
+}
+```
+
+Le document 2 contient le terme entertainment dans le champ genres et le terme art dans le champ app_name. Il est donc plus pertinent que le document 1 qui ne contient que le terme art dans le champ genres. Or, comme la requête est de type Dismax, seul le score du champ qui matche le mieux est remonté pour un document donné ; le score des autres champs qui matchent n’est pas pris en compte. L’effet cumulatif sur le score en cas de présence simultanée dans plusieurs champs est donc perdu.
+
+La solution pour tenir compte de tous les champs qui matchent est expliquée dans l’exercice suivant
 
 
 
 ###### 3.3.5 Recherches de type Dismax  avec tiebreaker
 
+```json
+GET /hol_devoxxfr_gstore_323/_search
+{
+ "query":
+ {
+   "dis_max": {
+     "queries":
+     [
+       {"match": {"genres": "entertainment art"}},
+       {"match": {"app_name": "entertainment art"}}
+     ],
+     "tie_breaker": 0.3
+   }
+ }
+}
+```
 
 
 ###### 3.3.6 Comprendre le score du mode Dismax
+
+Pour décomposer le score, il faut faire un explain comme indiqué ci-dessous
+
+ * Pour tous les documents
 
 ```shell      
 GET /hol_devoxxfr_gstore_323/_search?explain=true
@@ -70,21 +150,40 @@ GET /hol_devoxxfr_gstore_323/_search?explain=true
         {"match": {"genres": "entertainment art"}},
         {"match": {"app_name": "entertainment art"}}        
       ],
-      "tie_breaker": 0.0
+      "tie_breaker": 0.3
     }
   }
 }
 ```
 
+* Pour le document d'identifiant 2
+```json
+GET /hol_devoxxfr_gstore_323/_doc/2/_explain
+{
+  "query": 
+  {
+    "dis_max": {
+      "queries": 
+      [
+        {"match": {"genres": "entertainment art"}},
+        {"match": {"app_name": "entertainment art"}}        
+      ],
+      "tie_breaker": 0.3
+    }
+  }
+}
+```
+
+Le score se décompose comme suit :
 * 0.88960975 = 
     * 0,6931472 => le tie_breaker ne s'applique pas au champ dont le score est le plus élevé
     *    (+) 
     * (tie_breaker * 0,6548752)  => prise en compte du champ de score plus bas modéré par le tie_breaker
 
-* Modulation de l'effet tie_breaker 
-    * tie_breaker = 0 : le score du document remonté sera celui du champ dont le score est le plus élevé
-    * tie_breaker = 1 : Suppression de l'effet Dismax 
-    * tie_breaker usuel 0.3 à 0.4
+Modulation de l'effet tie_breaker 
+* tie_breaker = 0 : le score du document remonté sera celui du champ dont le score est le plus élevé
+* tie_breaker = 1 : Suppression de l'effet Dismax 
+* tie_breaker usuel 0.3 à 0.4
 
 ### 3.1.7 Queries de type Multimatch
 
