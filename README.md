@@ -17,6 +17,9 @@ POST /hol_devoxxfr_mp1/_doc/_bulk
 
 
 ##### 3.4.1.2 Analyse des données indexées
+###### Mettez en évidence cet ordre avec le champ title du document d’identifiant 3.
+
+
 Si vous avez fait l'exercice 2.1, vous l'avez déjà utilisé. Il s'agit de la requête sur le endpoint _analyze [indiquée en annexe](https://docs.google.com/document/d/1wZqOUP7X6eSZl7jMz7YXJbKT8EkNI30ZxlyYU3vqsCE/edit#heading=h.46n4fb7pm59).
 
 
@@ -86,8 +89,9 @@ Le résultat donne la position de chaque token. Cette information est donc connu
 }
 ```
 
-##### 3.4.1.3
+##### 3.4.1.3 match ou match_phrase
 
+###### Faites la requête
 ```shell
 GET /hol_devoxxfr_mp1/_search
 {
@@ -100,8 +104,9 @@ GET /hol_devoxxfr_mp1/_search
 }
 ```
 
+###### Que pensez vous de la pertinence du résultat ?
 C'est le score des documents retournés qui nous donne une indication de la pertinence des résultats (voir ci-dessous le json simplifié retourné par la requête).
-On constate ainsi que la distinction entre les utilisateurs content et pas content n'est pas bien reflétée par une différence dans le score.
+On constate ainsi que la distinction entre les utilisateurs content et pas content n'est pas bien reflétée par une différence de score.
 
 ```json
 {
@@ -129,10 +134,10 @@ On constate ainsi que la distinction entre les utilisateurs content et pas conte
 ```
 
 
-
+###### Faites la requête et comparez le résultat obtenu avec le résultat précédent.
 Requête match_phrase avec la chaîne "pas content".
 Cette requête ne retourne qu'un seul document. 
-* Avantage. Elle prend en compte l'ordre qui induit le sens recherché
+* Avantage. Elle prend en compte l'ordre des tokens (pas content) qui induit du sens
 * Inconvénient. Elle est trop restricitive
 
 ```shell
