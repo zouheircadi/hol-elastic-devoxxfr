@@ -1,10 +1,7 @@
 # Hand On Lab Devoxx France 2019-04
-### 3.5 Partial matching
-### 3.5.3 Sans modification de l’indexation : match_phrase_prefix
+## 4 Synthèse
+### 4.1 Chargement du fichier de travail
 
-Le mapping correct vous est fourni dans le fichier shell ./data/post-data-2-curl.sh
-
-Si vous n’avez pas la possibilité d’exécuter un script shell sur votre poste de travail, sachez qu’un copier/coller d’une instruction Curl vers les devTools Kibana transforme automatiquement la commande Curl dans la syntaxe du devTool.
 
 
 ###### match phrase prefix
@@ -20,14 +17,124 @@ GET /hol_devoxxfr_pm2/_search
 }
 ```
 
-###### validate de la query
-```shell
-GET /hol_devoxxfr_pm2/_validate/query?explain
+###### Mapping inféré après chargement des données
+```json
 {
-  "query": 
-  {
-    "match_phrase_prefix": {
-      "country": "cong"
+  "hol_devoxxfr_gstore_v1" : {
+    "aliases" : { },
+    "mappings" : {
+      "doc" : {
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date"
+          },
+          "android_ver" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "app_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "category" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "content_rating" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "current_ver" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "genres" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "installs" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "last_updated" : {
+            "type" : "date"
+          },
+          "price" : {
+            "type" : "float"
+          },
+          "rating" : {
+            "type" : "float"
+          },
+          "reviews" : {
+            "type" : "long"
+          },
+          "size" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "type" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      }
+    },
+    "settings" : {
+      "index" : {
+        "creation_date" : "1553638033456",
+        "number_of_shards" : "1",
+        "number_of_replicas" : "0",
+        "uuid" : "MgqukNFtTVS46wXTHBy_sw",
+        "version" : {
+          "created" : "6060099"
+        },
+        "provided_name" : "hol_devoxxfr_gstore_v1"
+      }
     }
   }
 }
