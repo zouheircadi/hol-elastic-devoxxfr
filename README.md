@@ -54,7 +54,7 @@ GET /hol_devoxxfr_gstore_322/_search
 
 
 Les tokens draw et art sont présents
-* Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
+* Pour le document d’identifiant 1, simultanément dans le champs app_name. Ce document peut donc être considéré comme très pertinent en prenant comme hypothèse que l’association et la proximité des mots est importante
 * Pour le document d’identifiant 2, art est présent dans le champ genres et draw est présent dans le champ app_name. Le mode de calcul de la pertinence lui attribue  ainsi un score plus élevé.
 
 On peut ne pas se satisfaire de ce mode de calcul. Comment faire pour que les champs qui contiennent le plus de mots recherchés remontent mieux ? La réponse est dans l’exercice suivant.
