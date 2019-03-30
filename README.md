@@ -1,7 +1,7 @@
 # Hand On Lab Devoxx France 2019-04
 ### 3.5 Partial matching
-#### 3.5.1 Prefix query et Regexp query
-##### 3.5.1.1 Prefix query  
+#### 3.5.2 Partial matching sans modification de l’indexation
+##### 3.5.2.1 Prefix query  
 
 ```shell
 GET /hol_devoxxfr_pm1/_search
@@ -55,7 +55,7 @@ Le prefixe recherché est la chaine Ba. La casse de la chaine n'est pas modifié
 
 
 
-##### 3.5.1.2 RegExp query
+##### 3.5.2.2 RegExp query
 
 ```shell
 GET /hol_devoxxfr_pm1/_search
