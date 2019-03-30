@@ -4,19 +4,6 @@
 
 
 
-###### match phrase prefix
-```shell
-GET /hol_devoxxfr_pm2/_search
-{
-  "query": 
-  {
-    "match_phrase_prefix": {
-      "country": "cong"
-    }
-  }
-}
-```
-
 ###### Mapping inféré après chargement des données
 ```json
 {
