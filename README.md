@@ -130,7 +130,7 @@ On constate ainsi que la distinction entre les utilisateurs content et pas conte
 
 
 
-Requête multimatch avec la chaîne "pas content".
+Requête match_phrase avec la chaîne "pas content".
 Cette requête ne retourne qu'un seul document. 
 * Avantage. Elle prend en compte l'ordre qui induit le sens recherché
 * Inconvénient. Elle est trop restricitive
@@ -170,4 +170,4 @@ GET /hol_devoxxfr_mp1/_search
 ```
 Avec une slop de 2, on trouve tous les documents. Mais le document avec les tokens en bonne position à un score à peu près égal au double de celui des autres documents.
 
-Dans la pratique, on passe souvent en paramètre une slop élevée (entre 50 et 100) de manière trouver à récompenser les documents avec des mots proches de la requêtes et à exclure les documents trop éloignés 
+Dans la pratique, on passe souvent en paramètre une slop élevée (entre 50 et 100) de manière à récompenser les documents avec des mots proches de la requêtes et à exclure les documents trop éloignés 
