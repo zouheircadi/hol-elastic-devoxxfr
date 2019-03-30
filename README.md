@@ -88,10 +88,29 @@ GET /hol_devoxxfr_pm1/_validate/query?explain
 }
 ```
 
+Résultat
+```json
+{
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "failed" : 0
+  },
+  "valid" : true,
+  "explanations" : [
+    {
+      "index" : "hol_devoxxfr_pm1",
+      "valid" : true,
+      "explanation" : "country:/.*Repu.*/"
+    }
+  ]
+}
+```
+
 
 #### Note. 
-Le typage du champ country est keyword. Il faut donc respecter la casse pour faire les requêtes. Si les champs étaient de type text, il aurait fallu veiller à faire la requête avec la même casse que la donnée indexée. Il faut bien garder en tête les caractéristiques ci-dessous lors de l'utilisation de ce type de requête
+Le typage du champ country est keyword. Il faut donc respecter la casse pour faire les requêtes. Si les champs étaient de type text, il aurait fallu veiller à faire la requête avec la même casse que la donnée indexée. Il faut bien garder à l'esprit les caractéristiques ci-dessous lors de l'utilisation de ce type de requête
 * Prend en compte le terme exact. Il n'y a pas d'analyse préalable. Il faut utiliser ces requêtes sur des champs non analysés
 * Ne calcule pas de score
-* Requêtes inéfficace à proscrire sur des corpus volumineux en tenant compte de la cardinalité du champ
+* Requêtes inefficace à proscrire sur des corpus volumineux en tenant compte de la cardinalité du champ
 
