@@ -31,7 +31,7 @@ POST /_aliases
 ###### Tester-le en lecture avec un get sur une valeur précédemment indexée
 Exemple : GET /hol_devoxxfr_15/_doc/1
 
-Tester-le en écriture sur l'alias
+###### Tester-le en écriture sur l'alias
 ```shell
 PUT /hol_devoxxfr_15/_doc/5
 {
