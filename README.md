@@ -58,7 +58,7 @@ La vérification se fait par une simple requête GET sur l'index nouvellement cr
 GET /hol_devoxxfr_14
 ```
 
-Résultat
+Résultat de sortie du GET
 ```json
 {
   "hol_devoxxfr_14" : {
