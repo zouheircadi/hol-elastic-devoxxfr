@@ -21,6 +21,8 @@ GET hol_devoxxfr_gstore_310/_search
 ### 3.1.2 Comprendre le score - recherche d’un terme unique 
 Comment se décompose le score du premier document trouvé pour la requête précédente ?
 
+
+###### Explain sur tous les documents
 ```shell
 GET hol_devoxxfr_gstore_310/_search?explain=true
 {
@@ -32,6 +34,17 @@ GET hol_devoxxfr_gstore_310/_search?explain=true
   }
 }      
 ```   
+###### Explain pour le document d'identifiant 3
+GET /hol_devoxxfr_gstore_310/_doc/3/_explain/
+{
+  "query": 
+  {
+    "match": {
+      "app_name": "draw"
+    }
+  }
+}
+
 
 Décomposition du score du premier document remonté qui a le score le plus élevé (la sortie JSON détaillée est également indiquée ci-dessous) 
 * 0.15461528 = 
@@ -40,7 +53,7 @@ Décomposition du score du premier document remonté qui a le score le plus éle
     *  1,1578947 => tf (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength))
 
 
-Résultat de la requête avec un explain (seul le premier document retourné est représenté)
+Résultat de la requête avec un explain
 ```json
 {
   "took" : 26,
