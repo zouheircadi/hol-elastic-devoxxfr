@@ -38,14 +38,27 @@ POST hol_devoxxfr_gstore_filter/_doc/_bulk
 { "app_name" : "Diabetes:M", "type" : "Free", "genres" : "Medical", "category" : "MEDICAL", "price" : 0.0, "last_updated" : "2018-07-31T22:00:00.000Z", "content_rating" : "Everyone", "rating" : 4.6}      
 ```    
 
-
-###### Chargement avec une requête Curl
-
+Le mapping est inféré. Notez donc bien le mapping des champs contenant des chaînes de caractères. Nous avons représenté ci-dessous le mapping du champ category. Pour filtrer sur une category, il faut donc utiliser le champ category.keyword qui est de type keyword. Les champs imbriqués sous l'attribut fields sont accédés par cette notation pointée.
+```json
+"category" : {
+"type" : "text",
+"fields" : {
+  "keyword" : {
+    "type" : "keyword",
+    "ignore_above" : 256
+  }
+}      
+```    
 
 ###### Quels sont tous les documents de la category ART_AND_DESIGN ?
 
-2 réponses possibles
-* Avec une query de type booléen et un filtre
+Plusieurs réponses possibles
+
+* Avec une query mixte de type booléen contenant
+    * un match_all
+    * et un filtre
+
+Le match_all peut être remplacé par une ou des requêtes full text (match, multi_match, ...). Si tel était le cas, le contexte aurait été de type full text avec un calcul de score.
 ```shell
 POST hol_devoxxfr_gstore_filter/_search
 {
@@ -63,6 +76,25 @@ POST hol_devoxxfr_gstore_filter/_search
           "category.keyword": "ART_AND_DESIGN"
         }  
   
+      }
+    }
+  }
+}
+```
+
+* Avec une query de type booléen et un filtre
+```shell
+POST hol_devoxxfr_gstore_filter/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "filter": 
+      {
+        "term": {
+          "category.keyword": "ART_AND_DESIGN"
+        }
       }
     }
   }
