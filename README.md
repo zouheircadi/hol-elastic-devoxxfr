@@ -1,6 +1,8 @@
 # Hand On Lab Devoxx France 2019-04
 ### 3.5 Partial matching
-### 3.5.3 Sans modification de l’indexation : match_phrase_prefix
+#### 3.5.2 Partial matching sans modification de l’indexation
+
+##### 3.5.2.3 match_phrase_prefix
 
 Le mapping correct vous est fourni dans le fichier shell ./data/post-data-2-curl.sh
 
