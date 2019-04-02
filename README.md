@@ -4,6 +4,9 @@
 
 
 ###### Trouver le document dont la category est exactement "ART-AND-DESIGN"
+
+Les trois requêtes ci-dessous de type filtre ne retournent aucun résultat
+* constant score query
 ```shell
 GET /hol_devoxxfr_11/_doc/_search
 {
@@ -20,8 +23,58 @@ GET /hol_devoxxfr_11/_doc/_search
 }
 ```    
 
+* boolean query
+```shell
+GET /hol_devoxxfr_11/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "filter": 
+      {
+        "term": {
+          "category": "ART-AND-DESIGN"
+        }
+      }
+    }
+  }
+}
+```
+
+* boolean mixte query
+```shell
+GET /hol_devoxxfr_11/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match_all": {}}
+      ],
+      "filter": 
+      {
+        "term": {
+          "category": "ART-AND-DESIGN"
+        }
+      }
+    }
+  }
+}
+```
+
+
 ###### Pour quelle raison
-L'API analyse nous indique que le champ n'est pas indexé tel quel. Il est tokenisé sur le tiret. Il n'est donc pas possible de le trouver  
+
+* on vérifie dans un premier temps que l'index contient bien des données
+
+```shell
+GET /hol_devoxxfr_11/_search
+```
+
+* On utilise ensuite le endPoint _analyze pour voir comment est indexé le champ  
 ```shell
 GET /hol_devoxxfr_11/_analyze
 {
@@ -30,7 +83,9 @@ GET /hol_devoxxfr_11/_analyze
 }
 ```
 
-Si on effectue le même test sur le champ category.keyword, on constate que le document est indexé tel quel
+L'API analyse nous indique que le champ n'est pas indexé tel quel. Il est tokenisé sur le tiret. Il n'est donc pas possible de le trouver
+
+Si on effectue le même test sur le champ category.keyword, on constate que le contenu du champ est indexé tel quel
 ```shell
 GET /hol_devoxxfr_11/_analyze
 {
@@ -59,7 +114,7 @@ GET /hol_devoxxfr_11/_doc/_search
 }
 ```
 
-Pour l'index hol_devoxxfr_14, on peut donc interroger le champ category pur lequel on a fixer le mapping
+Pour l'index hol_devoxxfr_14, on peut interroger le champ category pour lequel on a fixer le mapping
 ```shell
 GET /hol_devoxxfr_14/_doc/_search
 {
