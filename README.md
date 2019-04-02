@@ -117,9 +117,54 @@ Le typage du champ country est keyword. Il faut donc respecter la casse pour fai
 
 ##### 3.5.2.3 match_phrase_prefix 
 
-Le mapping correct vous est fourni dans le fichier shell ./data/post-data-2-curl.sh
+###### En vous aidant de la documentation en ligne pour la syntaxe, trouver les documents dont le champ country commence par cong.
+```shell
+GET /hol_devoxxfr_pm1/_search
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "cong"
+    }
+  }
+}
+``` 
+
+###### Si vous avez chargé le jeu d’essais avec les scripts qui vous ont été procurés, la recherche devrait être infructueuse. Pourquoi ?
+```shell
+GET /hol_devoxxfr_pm1/_validate/query?explain
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "cong"
+    }
+  }
+}
+```
+
+La chaine cong devrait être jokérisée. Ca n'est pas le cas. Pensez aussi au fait que les champs sont de type keyword
+
+###### Créer un autre index hol_devoxxfr_pm2 avec le bon mapping et recharger les données. 
+
+Le mapping correct vous est fourni dans le fichier shell ./data/post-data-2-curl.sh. Le mapping du champ country est maintenant de type text
 
 Si vous n’avez pas la possibilité d’exécuter un script shell sur votre poste de travail, sachez qu’un copier/coller d’une instruction Curl vers les devTools Kibana transforme automatiquement la commande Curl dans la syntaxe du devTool.
+
+
+###### validate de la query sur le nouvel index
+```shell
+GET /hol_devoxxfr_pm2/_validate/query?explain
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "cong"
+    }
+  }
+}
+```
+* explain sur le champ donne maintenant un résultat jokérisé
 
 
 ###### match phrase prefix
@@ -135,15 +180,3 @@ GET /hol_devoxxfr_pm2/_search
 }
 ```
 
-###### validate de la query
-```shell
-GET /hol_devoxxfr_pm2/_validate/query?explain
-{
-  "query": 
-  {
-    "match_phrase_prefix": {
-      "country": "cong"
-    }
-  }
-}
-```
