@@ -66,7 +66,7 @@ GET /hol_devoxxfr_11/_search
 ```
 
 
-###### Pour quelle raison
+###### Pour quelle raison  ?
 
 * on vérifie dans un premier temps que l'index contient bien des données
 
@@ -94,10 +94,19 @@ GET /hol_devoxxfr_11/_analyze
 }
 ```
 
-Lorsqu'on utilise le "mapping automatique", tout champ de type texte est indexé de deux manières 
-* Indexation de type text => Le champ est analysé
-* Indexation de type keyword => Le champ n'est pas analysé. Il est indexé sans aucune modification
-Pour l'index hol_devoxxfr_11, on peut donc interroger le champ category.keyword
+
+######Quelle(s) solution(s) peut-on envisager pour remédier à cette situation ?
+
+* index hol_devoxxfr_11
+    * Lorsqu'on utilise le "mapping automatique", tout champ de type texte est indexé de deux manières 
+        * Indexation de type text => Le champ est analysé
+        * Indexation de type keyword => Le champ n'est pas analysé. Il est indexé sans aucune modification.
+    * Pour l'index hol_devoxxfr_11, on peut donc interroger le champ category.keyword
+
+
+
+
+
 ```shell
 GET /hol_devoxxfr_11/_doc/_search
 {
@@ -114,7 +123,7 @@ GET /hol_devoxxfr_11/_doc/_search
 }
 ```
 
-Pour l'index hol_devoxxfr_14, on peut interroger le champ category pour lequel on a fixer le mapping
+* Pour l'index hol_devoxxfr_14, on peut interroger le champ category pour lequel on a fixé le mapping
 ```shell
 GET /hol_devoxxfr_14/_doc/_search
 {
