@@ -75,7 +75,7 @@ GET /hol_devoxxfr_11/_search
 ```
 
 * On utilise ensuite le endPoint _analyze pour voir comment est indexé le champ  
-```shell
+```json
 GET /hol_devoxxfr_11/_analyze
 {
   "field" : "category",  
@@ -86,7 +86,7 @@ GET /hol_devoxxfr_11/_analyze
 L'API analyse nous indique que le champ n'est pas indexé tel quel. Il est tokenisé sur le tiret. Il n'est donc pas possible de le trouver
 
 Si on effectue le même test sur le champ category.keyword, on constate que le contenu du champ est indexé tel quel
-```shell
+```json
 GET /hol_devoxxfr_11/_analyze
 {
   "field" : "category.keyword",  
