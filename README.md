@@ -95,7 +95,7 @@ GET /hol_devoxxfr_11/_analyze
 ```
 
 
-######Quelle(s) solution(s) peut-on envisager pour remédier à cette situation ?
+###### Quelle(s) solution(s) peut-on envisager pour remédier à cette situation ?
 
 * index hol_devoxxfr_11
     * Lorsqu'on utilise le "mapping automatique", tout champ de type texte est indexé de deux manières 
