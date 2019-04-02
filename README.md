@@ -167,7 +167,7 @@ GET /hol_devoxxfr_pm2/_validate/query?explain
 * explain sur le champ donne maintenant un résultat jokérisé
 
 
-###### match phrase prefix
+###### Refaites la requête sur l’index hol_devoxxfr_pm2
 ```shell
 GET /hol_devoxxfr_pm2/_search
 {
