@@ -33,7 +33,7 @@ PUT /hol_devoxxfr_14
 
 Indexer les données avec la requête REST ci-dessous
 ```shell
-POST / hol_devoxxfr_14/_doc/_bulk
+POST /hol_devoxxfr_14/_doc/_bulk
 { "index": { "_id": 1 }}
 {"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
 { "index": { "_id": 2 }}
