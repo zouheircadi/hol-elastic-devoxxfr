@@ -134,7 +134,7 @@ On constate ainsi que la distinction entre les utilisateurs content et pas conte
 ```
 
 
-###### Faites la requête et comparez le résultat obtenu avec le résultat précédent.
+###### Faites la requête sur les mêmes tokens mais avec une query de type match_phrase. Comparez le résultat obtenu avec le résultat précédent.
 Requête match_phrase avec la chaîne "pas content".
 Cette requête ne retourne qu'un seul document. 
 * Avantage. Elle prend en compte l'ordre des tokens (pas content) qui induit du sens
