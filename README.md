@@ -5,7 +5,7 @@
 
 ###### inject data
 ```shell
-POST /hol_devoxxfr_gstore_320/_doc/_bulk
+POST /hol_devoxxfr_mf1/_doc/_bulk
 { "index": { "_id": 1 }}
 {"app_name" : "draw pixel art number", "genres" : "Art & Design;Creativity"}
 { "index": { "_id": 2 }}
@@ -19,7 +19,7 @@ POST /hol_devoxxfr_gstore_320/_doc/_bulk
     * art dans le champ genres
 
 ```shell      
-GET  hol_devoxxfr_gstore_320/_search
+GET  hol_devoxxfr_mf1/_search
 {
   "query": 
   {
