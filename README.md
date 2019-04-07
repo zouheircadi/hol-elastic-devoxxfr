@@ -9,7 +9,7 @@
     * "draw art" dans le champ genres
 
 ```shell      
-GET  hol_devoxxfr_gstore_320/_search
+GET  hol_devoxxfr_mulfld1/_search
 {
   "query": 
   {
@@ -30,7 +30,7 @@ GET  hol_devoxxfr_gstore_320/_search
 On recherche les tokens "draw art" dans les documents ci-dessous
 
 ```shell
-POST /hol_devoxxfr_gstore_322/_doc/_bulk
+POST /hol_devoxxfr_mulfld2/_doc/_bulk
 { "index": { "_id": 1 }}
 {"genres" : "Entertainment", "app_name" : "Pixel Draw Art filter for selfies"}
 { "index": { "_id": 2 }}
@@ -38,7 +38,7 @@ POST /hol_devoxxfr_gstore_322/_doc/_bulk
 ```
 
 ```json
-GET /hol_devoxxfr_gstore_322/_search
+GET /hol_devoxxfr_mulfld2/_search
 {
  "query": {
    "bool": {
@@ -63,7 +63,7 @@ On peut ne pas se satisfaire de ce mode de calcul. Comment faire pour que les ch
 ###### 2.2.3.3 Recherches de type Dismax
 
 ```json
-GET /hol_devoxxfr_gstore_322/_search
+GET /hol_devoxxfr_mulfld2/_search
 {
  "query":
  {
