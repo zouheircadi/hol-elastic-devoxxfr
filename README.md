@@ -1,9 +1,9 @@
 # Hand On Lab Devoxx France 2019-04
-## Recherches full-text
-### 3.1 Recherches sur un champ unique
+## 2.2 Recherches full-text
+### 2.2.1 Recherches sur un champ unique
 
 
-### 3.1.1 Match query
+### 2.2.1.1 Match query
 Quels sont les documents qui contiennent le terme draw dans le champ app_name ?
 ```shell
 GET hol_devoxxfr_gstore_310/_search
@@ -18,7 +18,7 @@ GET hol_devoxxfr_gstore_310/_search
       
 ```    
 
-### 3.1.2 Comprendre le score - recherche d’un terme unique 
+### 2.2.1.2 Comprendre le score - recherche d’un terme unique 
 Comment se décompose le score du premier document trouvé pour la requête précédente ?
 
 
@@ -144,7 +144,7 @@ Résultat de la requête avec un explain
 ```
 
 
-### 3.1.3 OR
+### 2.2.1.3 OR
 Quels sont les documents qui contiennent les termes draw ou art dans le champ app_name ?
 
 ```shell
@@ -159,7 +159,7 @@ GET hol_devoxxfr_gstore_310/_search
 }      
 ```    
 
-### 3.1.4 Comprendre le score - recherche de plusieurs termes 
+### 2.2.1.4 Comprendre le score - recherche de plusieurs termes 
 Comment se décompose le score du premier document trouvé pour la requête OR ?
 
 ```shell
@@ -274,7 +274,7 @@ Résultat de la requête avec un explain (seul le premier document retourné est
 
 ```
 
-### 3.1.5 AND
+### 2.2.1.5 AND
 Quels sont les documents qui contiennent les termes draw et art dans le champ app_name ?
 
 ```shell
