@@ -1,6 +1,7 @@
 # Hand On Lab Devoxx France 2019-04
-### 3.6 Spécificités du langage
-#### 3.6.1 Les utilisateurs n’en font qu’à leur tête !
+# 2. Recherches
+### 2.5 Spécificités du langage
+#### 2.5.1 Les utilisateurs n’en font qu’à leur tête !
 
 ###### Faites une requête de type match sur le champ app_name pour la chaîne photos.
 ```shell
@@ -50,7 +51,7 @@ GET _analyze
 
 
 
-#### 3.6.2 Création d’un index personnalisé
+#### 2.5.2 Création d’un index personnalisé
 
 Nous allons créer l'index [en deux étapes](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html)
 * création d'un index "vide" (sans mappings mais avec les settings du template)
@@ -133,7 +134,7 @@ PUT hol_devoxxfr_lang1/_mapping/_doc
 ```
 
 
-#### 3.6.3 Ajout des données
+#### 2.5.3 Ajout des données
 ```shell
 POST /hol_devoxxfr_lang1/_doc/_bulk
 { "index": { "_id": 1 }}
@@ -169,7 +170,7 @@ POST /hol_devoxxfr_lang1/_doc/_bulk
 ```
 
 
-#### 3.6.4 Requêtes
+#### 2.5.4 Requêtes
 
 
 * Approche naïve
