@@ -5,7 +5,7 @@
 
 ###### Données à charger avec les devTools Kibana
 ```shell
-POST hol_devoxxfr_gstore_filter/_doc/_bulk
+POST hol_devoxxfr_filter/_doc/_bulk
 { "index": { "_id": 1 }}
 {"app_name" : "Photo Editor & Candy Camera & Grid & ScrapBook", "type" : "Free", "genres" : "Art & Design", "category" : "ART_AND_DESIGN","price" : 0.0, "last_updated" : "2018-01-06T23:00:00.000Z", "content_rating" : "Everyone","rating" : 4.1}
 { "index": { "_id": 2 }}
@@ -41,7 +41,7 @@ POST hol_devoxxfr_gstore_filter/_doc/_bulk
 
 ###### Chargement avec une requête Curl
 ```shell
-curl -XPOST "http://localhost:9200/hol_devoxxfr_gstore_filter/_doc/_bulk" -H 'Content-Type: application/json' -d'
+curl -XPOST "http://localhost:9200/hol_devoxxfr_filter/_doc/_bulk" -H 'Content-Type: application/json' -d'
 { "index": { "_id": 1 }}
 {"app_name" : "Photo Editor & Candy Camera & Grid & ScrapBook", "type" : "Free", "genres" : "Art & Design", "category" : "ART_AND_DESIGN","price" : 0.0, "last_updated" : "2018-01-06T23:00:00.000Z", "content_rating" : "Everyone","rating" : 4.1}
 { "index": { "_id": 2 }}
