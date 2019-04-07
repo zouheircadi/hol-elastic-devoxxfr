@@ -1,6 +1,6 @@
 # Hand On Lab Devoxx France 2019-04
-## Les filtres (recherches structurées)
-### 2.1 Recherche basique de type filtre
+## 2.1 Les filtres (recherches structurées)
+### 2.1.1 Recherche basique de type filtre
 
 
 ###### Trouver le document dont la category est exactement "ART-AND-DESIGN"
