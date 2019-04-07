@@ -6,7 +6,7 @@
 ### 2.2.1.1 Match query
 Quels sont les documents qui contiennent le terme draw dans le champ app_name ?
 ```shell
-GET hol_devoxxfr_gstore_310/_search
+GET hol_devoxxfr_mq/_search
 {
   "query": 
   {
@@ -24,7 +24,7 @@ Comment se décompose le score du premier document trouvé pour la requête pré
 
 ###### Explain sur tous les documents
 ```shell
-GET hol_devoxxfr_gstore_310/_search?explain=true
+GET hol_devoxxfr_mq/_search?explain=true
 {
   "query": 
   {
@@ -35,7 +35,7 @@ GET hol_devoxxfr_gstore_310/_search?explain=true
 }      
 ```   
 ###### Explain pour le document d'identifiant 3
-GET /hol_devoxxfr_gstore_310/_doc/3/_explain/
+GET /hol_devoxxfr_mq/_doc/3/_explain/
 {
   "query": 
   {
@@ -69,9 +69,9 @@ Résultat de la requête avec un explain
     "max_score" : 0.15461528,
     "hits" : [
       {
-        "_shard" : "[hol_devoxxfr_gstore_310][0]",
+        "_shard" : "[hol_devoxxfr_mq][0]",
         "_node" : "YgaDyGWxQ86eKKynrH5QdQ",
-        "_index" : "hol_devoxxfr_gstore_310",
+        "_index" : "hol_devoxxfr_mq",
         "_type" : "_doc",
         "_id" : "3",
         "_score" : 0.15461528,
@@ -148,7 +148,7 @@ Résultat de la requête avec un explain
 Quels sont les documents qui contiennent les termes draw ou art dans le champ app_name ?
 
 ```shell
-GET hol_devoxxfr_gstore_310/_search
+GET hol_devoxxfr_mq/_search
 {
   "query": 
   {
@@ -163,7 +163,7 @@ GET hol_devoxxfr_gstore_310/_search
 Comment se décompose le score du premier document trouvé pour la requête OR ?
 
 ```shell
-GET hol_devoxxfr_gstore_310/_search?explain=true
+GET hol_devoxxfr_mq/_search?explain=true
 {
   "query": 
   {
@@ -199,9 +199,9 @@ Résultat de la requête avec un explain (seul le premier document retourné est
     "max_score" : 0.12503365,
     "hits" : [
       {
-        "_shard" : "[hol_devoxxfr_gstore_310][0]",
+        "_shard" : "[hol_devoxxfr_mq][0]",
         "_node" : "YgaDyGWxQ86eKKynrH5QdQ",
-        "_index" : "hol_devoxxfr_gstore_310",
+        "_index" : "hol_devoxxfr_mq",
         "_type" : "_doc",
         "_id" : "3",
         "_score" : 0.12503365,
@@ -278,7 +278,7 @@ Résultat de la requête avec un explain (seul le premier document retourné est
 Quels sont les documents qui contiennent les termes draw et art dans le champ app_name ?
 
 ```shell
-GET hol_devoxxfr_gstore_310/_search
+GET hol_devoxxfr_mq/_search
 {
   "query": 
   {
