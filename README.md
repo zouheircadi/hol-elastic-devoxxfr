@@ -1,6 +1,7 @@
 # Hand On Lab Devoxx France 2019-04
-### 3.5 Partial matching
-#### 3.5.3 Partial matching avec modification de l’indexation : edge-ngrams
+# 2. Recherches
+## 2.4 Partial matching
+### 2.4.3 Partial matching avec modification de l’indexation : edge-ngrams
 ###### En vous aidant de la documentation en ligne, créer un index de type index-time-search-as-you-type que vous appellerez hol_devoxxfr_pm3
 
 ```shell
