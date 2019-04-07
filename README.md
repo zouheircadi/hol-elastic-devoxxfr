@@ -5,7 +5,7 @@
 
 ###### Faites une requête de type match sur le champ app_name pour la chaîne photos.
 ```shell
-GET hol_devoxxfr_gstore_filter/_search
+GET hol_devoxxfr_filter/_search
 {
   "query": 
   {
@@ -19,7 +19,7 @@ GET hol_devoxxfr_gstore_filter/_search
 ###### Cette requête ne permet de trouver aucun document. Pourquoi (réponse argumentée avec l’outillage mis à disposition par Elasticsearch) ?
 
 ```shell
-GET hol_devoxxfr_gstore_filter/_analyze
+GET hol_devoxxfr_filter/_analyze
 {
   "text": ["photos"],
   "field": "app_name"
@@ -31,7 +31,7 @@ Le terme photos est analysé en photos. Il est donc normal de ne pas le trouver
 ###### Quel test pourrait-on faire pour trouver un ou des analyzers adéquats sans indexation de données (réponse argumentée avec l’outillage mis à disposition par Elasticsearch)?
 
 ```shell
-GET hol_devoxxfr_gstore_filter/_analyze
+GET hol_devoxxfr_filter/_analyze
 {
   "text": ["photos"],
   "analyzer": "english"
