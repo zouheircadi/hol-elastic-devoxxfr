@@ -140,4 +140,8 @@ GET /hol_devoxxfr_14/_doc/_search
 }
 ```
 
-Il faut donc bien veiller à indexer les chaines de caractère avec le type keyword pour éviter les surprises. Les types primitifs (integer, long, float,double ...) et le type date n'exigent pas de configuration particulière hormis le typage par défaut.
+* Lorsqu'on met en place des filtres
+    * pour les chaines de caractère 
+        * Il faut bien penser aux effets de bord des typâges qui modifient les chaînes stockées (type text et ses dérivés)    
+        * le type keyword est adapté **dans l'hypothèse ou on veut être sûr que la saisie utilisateur doit être strictement identique à ce qui est stocké dans l'index**.  
+    * Les types primitifs (integer, long, float,double ...) et le type date n'exigent pas de configuration particulière hormis le typage par défaut.
