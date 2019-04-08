@@ -140,8 +140,9 @@ Cette requête ne retourne qu'un seul document.
 * Avantage. Elle prend en compte l'ordre des tokens (pas content) qui induit du sens
 * Inconvénient. Elle est trop restricitive
 
-```shell
 Requête multimatch avec la chaîne "pas content"
+
+```shell
 GET /hol_devoxxfr_mp1/_search
 {
   "query": 
