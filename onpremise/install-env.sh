@@ -9,9 +9,10 @@ KIBANA_LINUX_FOLDER=kibana-${VERSION}-linux-x86_64
 
 LOGSTASH_BIN=logstash-${VERSION}.tar.gz
 
-export ELK_HOME=$HOME/elastic
 
 mkdir -p $HOME/elastic/downloads ; cd $HOME/elastic
+
+export ELK_HOME=$HOME/elastic
 
 
 # Installation Elastic
