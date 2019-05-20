@@ -1,0 +1,1523 @@
+############################
+# URL du TP en ligne
+http://tinyurl.com/y4ny7gwu 
+############################
+
+
+
+#########################
+#### INSTALLATIONS  #####
+#########################
+
+
+
+
+#### GIT
+#########################
+
+# create a elastic directory under $HOME
+# mkdir -p ${HOME}/elastic/downloads ; cd ${HOME}/elastic
+
+
+# git clone -b step-00 https://github.com/zouheircadi/hol-elastic-devoxxfr.git
+
+
+#### Container dockerisés
+#########################
+# start containers
+# docker-compose -f $HOME/elastic/hol-elastic-devoxxfr/docker/docker-compose-ek-sa.yml up
+
+# stop containers
+# docker-compose -f $HOME/elastic/hol-elastic-devoxxfr/docker/docker-compose-ek-sa.yml down
+
+
+#### Installations standAlone
+#########################
+# $HOME/elastic/hol-elastic-devoxxfr/onpremise/install-env.sh 
+
+
+
+#### LANCER ES en standALone
+$HOME/elastic/search/6.6.0/bin/elasticsearch
+
+#### LANCER KIB en standALone
+$HOME/elastic/kibana/6.6.0/bin/kibaba
+
+
+# Tests de bon fonctionnement
+
+
+
+#########################
+# 1  GESTION DES INDEX  #
+#########################
+
+
+# 1.1 Autocréation d’index
+##########################
+
+# Q? 
+# Créer un index par injection de données avec la requête POST ci-dessous. 
+POST hol_devoxxfr_11/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
+{ "index": { "_id": 2 }}
+{ "app_name" : "YouTube Kids", "category" : "FAMILY", "last_updated" : "2018-08-02", "rating" : 4.5}
+{ "index": { "_id": 3 }}      
+{ "app_name" : "Block Puzzle Classic Legend !","category" : "GAME", "last_updated" : "2018-07-22", "rating" : 4.7}
+{ "index": { "_id": 4 }}      
+{ "app_name" : "Marble Woka Woka 2018 - Bubble Shooter Match 3", "category" : "GAME", "last_updated" : "2018-08-02","rating" : 4.6}
+{ "index": { "_id": 5 }}      
+{ "app_name" : "QR Code Reader", "category" : "TOOLS", "last_updated" : "2016-03-15", "rating" : 4.0}
+{ "index": { "_id": 6 }}      
+{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}
+
+# Q? 
+# Afficher les caractéristiques de l’index nouvellement créé
+GET /hol_devoxxfr_11
+
+
+
+
+# 1.2  Création template
+####################################################
+
+
+# Q? 
+# Durant ce TP, nous voulons faire en sorte que  tous les index créés aient 1 shard et 0 réplica
+# Créer un template que vous appellerez  template_hol_dvxfr possédant ses caractéristiques 
+
+
+PUT /_template/template_hol_dvxfr
+{
+  "index_patterns" : ["hol_devoxxfr*"] ,
+  "settings" : 
+  {
+    "number_of_shards" : 1,
+    "number_of_replicas" : 0
+  }
+}
+
+
+
+
+
+# 1.3 Création d’un index sur la base d’un template
+###################################################
+
+# Q? 
+# Créer un index par injection de données avec la requête POST ci-dessous.  
+
+POST /hol_devoxxfr_13/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
+{ "index": { "_id": 2 }}
+{ "app_name" : "YouTube Kids", "category" : "FAMILY", "last_updated" : "2018-08-02", "rating" : 4.5}
+{ "index": { "_id": 3 }}
+{ "app_name" : "Block Puzzle Classic Legend !","category" : "GAME", "last_updated" : "2018-07-22", "rating" : 4.7}
+{ "index": { "_id": 4 }}
+{ "app_name" : "Marble Woka Woka 2018 - Bubble Shooter Match 3", "category" : "GAME", "last_updated" : "2018-08-02","rating" : 4.6}
+{ "index": { "_id": 5 }}
+{ "app_name" : "QR Code Reader", "category" : "TOOLS", "last_updated" : "2016-03-15", "rating" : 4.0}
+{ "index": { "_id": 6 }}
+{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6}    
+
+# Q? 
+# Vérifier que l’index nouvellement créé possède bien les caractéristiques définis dans le template (un seul shard et zéro replica)
+GET /hol_devoxxfr_13
+
+
+
+
+
+#### AUTRE EXEMPLE ####
+# template template_hol_dvxfr_bis
+
+PUT /_template/template_hol_dvxfr_bis
+{
+  "index_patterns" : ["hol_test*"],
+  "settings" : 
+  {
+    "number_of_shards" : 1,
+    "number_of_replicas" : 0
+    
+  },
+  "mappings" : 
+  {
+    "_doc" : 
+    {
+      "properties" : 
+      {
+        "flag" : {"type" : "keyword"}
+      }
+    }
+  }
+}
+
+
+#  creation index hol_test_13bis
+POST hol_test_13bis/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1,"flag" : "RED"}
+
+
+# Controle mapping
+GET hol_test_13bis
+
+
+
+
+# 1.4  Création Index avec mapping personnalisé
+###############################################
+
+# Q?
+#Créer un index avec les caractéristiques suivantes
+## Nom : hol_devoxxfr_14
+## Dont le mapping est Type : _doc
+##Champs
+#### app_name : chaine de caractère analysée
+#### category : chaine de caractère non analysée
+#### last_updated : date
+#### rating : double
+
+
+PUT hol_devoxxfr_14
+{
+  "mappings": 
+  {
+    "_doc" : 
+    {
+      "properties" : 
+      {
+        "app_name" : {"type" : "text"},
+        "category" : {"type" : "keyword"},
+        "last_updated" : {"type" : "date"},
+        "rating" : {"type" : "double"}      
+      }
+    }
+  }
+}
+
+
+
+
+
+# Q? 
+# Indexer les données avec la requête REST ci-dessous
+
+POST /hol_devoxxfr_14/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"app_name" : "Photo Editor", "category" : "ART-AND-DESIGN", "last_updated" : "2018-01-06","rating" : 4.1}
+{ "index": { "_id": 2 }}
+{ "app_name" : "YouTube Kids", "category" : "FAMILY", "last_updated" : "2018-08-02", "rating" : 4.5}
+{ "index": { "_id": 3 }}
+{ "app_name" : "Block Puzzle Classic Legend !","category" : "GAME", "last_updated" : "2018-07-22", "rating" : 4.7}
+{ "index": { "_id": 4 }}
+{ "app_name" : "Marble Woka Woka 2018 - Bubble Shooter Match 3", "category" : "GAME", "last_updated" : "2018-08-02","rating" : 4.6}
+{ "index": { "_id": 5 }}
+{ "app_name" : "QR Code Reader", "category" : "TOOLS", "last_updated" : "2016-03-15", "rating" : 4.0}
+{ "index": { "_id": 6 }}
+{ "app_name" : "Diabetes:M", "category" : "MEDICAL", "last_updated" : "2018-07-31", "rating" : 4.6} 
+
+
+# Q? 
+# Vérifier que votre index 
+## contient bien un seul shard avec zéro réplica -> 
+## que le mapping est différent de celui inféré par défaut -> confirme au mapping défini lors de la création de l'index
+
+GET /hol_devoxxfr_14
+
+
+
+
+
+# 1.5 Gestion des alias <Optional>
+###############################################
+
+
+
+
+
+# 1.6 Suppression index
+###############################################
+
+# hol_test_13bis
+
+HEAD hol_test_13bis
+
+DELETE hol_test_13bis
+
+
+
+
+# Corrigé : git checkout  step-16-solution
+
+
+# => !!!! SLIDES !!!!
+
+
+
+
+
+
+
+
+
+
+
+#########################
+#########################
+#########################
+# 2     RECHERCHES     #
+#########################
+#########################
+#########################
+
+
+
+
+
+#########################
+# 2.1     LES FILTRES     #
+#########################
+
+# OBJECTIF
+##Comprendre pour quel type de mapping les filtres sont pertinents
+## Syntaxe de quelques requêtes contenant des filtres (term, range)
+
+# => !!!! SLIDES !!!!
+
+# 2.1.1 Recherche basique de type filtre - 1
+##########################################
+
+#Nous allons dans un premier temps travailler sur l’index hol_devoxxfr_11.
+
+# Q? 
+# Trouver les documents dont la category est exactement "ART-AND-DESIGN". 
+
+
+
+# Compound query de type bool
+GET /hol_devoxxfr_11/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match_all": {}}
+      ],
+      "filter": 
+      {
+        "term": {
+          "category": "ART-AND-DESIGN"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+# Compound query de type bool.filter query
+GET /hol_devoxxfr_11/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "filter": 
+      {"term": {
+        "category": "ART-AND-DESIGN"
+      }}
+    }
+  }
+}
+
+
+
+
+# Compound query de type constant_score query
+GET /hol_devoxxfr_11/_search
+{
+  "query": 
+  {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "category": "ART-AND-DESIGN"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+# Q? 
+# Le document ne devrait pas être trouvé. Pour quelle raison ?
+
+
+
+## On vérifie qu'il y a bien des données dans l'index
+
+GET /hol_devoxxfr_11/_search
+
+
+
+## On utilise ensuite le endPoint _analyze pour voir comment est indexé le champ category
+GET /hol_devoxxfr_11/_analyze
+{
+  "text": ["ART-AND-DESIGN"],
+  "field": "category"
+}
+
+
+
+
+
+
+# Q? 
+# Quelle(s) solution(s) peut-on envisager pour remédier à cette situation ?
+
+
+## analyze sur le champ category.keyword
+GET /hol_devoxxfr_11/_analyze
+{
+  "text": ["ART-AND-DESIGN"],
+  "field": "category.keyword"
+}
+
+
+
+
+
+## Index hol_devoxxfr_11
+GET /hol_devoxxfr_11/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "filter": 
+      {
+        "term": {
+          "category.keyword": "ART-AND-DESIGN"
+        }
+      }
+    }
+  }
+}
+
+
+
+## Index hol_devoxxfr_14
+
+GET /hol_devoxxfr_14/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "filter": 
+      {
+        "term": {
+          "category": "ART-AND-DESIGN"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+# Corrigé : git checkout  step-211-solution
+
+
+
+
+
+ 
+# 2.1.2 Recherche basique de type filtre - 2
+##########################################
+
+# Q? 
+# Charger dans un premier temps les données dédiées à cet exercice grâce aux indications données dans la branche git ci-dessous :
+
+# git checkout  step-212
+
+
+
+# ADD Data hol_devoxxfr_filter
+# $HOME/elastic/hol-elastic-devoxxfr/data/post-data-212.sh
+
+
+
+GET /hol_devoxxfr_filter/_search
+
+
+
+# Q?  index hol_devoxxfr_filter
+# Quels sont tous les documents de la category ART_AND_DESIGN ? 4 documents
+
+GET /hol_devoxxfr_filter/_search
+{
+  "query": 
+  {"bool": 
+    {
+      "filter": 
+      {
+        "term": {
+          "category.keyword": "ART_AND_DESIGN"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+# Q? 
+# Quels sont tous les documents pour lesquels le champ last_updated est compris entre le 1er janvier et le 31 décembre 2017 (les documents de 2017 en somme) ? => 1 Document
+
+GET /hol_devoxxfr_filter/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "filter": 
+      {
+        "range": {
+          "last_updated": {
+            "gte": "2017-01-01",
+            "lte": "2017-12-31"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+# Q? 
+# Quels sont les documents dont le rating est strictement supérieur à 4.6 ? => 1 Document
+
+GET hol_devoxxfr_filter/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match_all": {}}
+      ],
+      "filter": 
+      {
+        "range": {
+          "rating": {
+            "gt": 4.6
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+# Corrigé
+# git checkout step-212-solution
+
+
+
+
+
+
+
+
+###################################
+# 2.2     RECHERCHES  FULL-TEXT   #
+###################################
+
+
+######################################
+# 2.2.1 Recherches sur un champ unique
+######################################
+
+# DELETE
+
+
+# Nous allons tout d’abord poster les données ci-dessous
+POST /hol_devoxxfr_mq/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"app_name" : "draw pixel art number"}
+{ "index": { "_id": 2 }}
+{"app_name" : "draw pixel number"}
+{ "index": { "_id": 3 }}
+{"app_name" : "draw figure"}
+
+
+# 3.1.1 Match query
+# Quels sont les documents qui contiennent le terme draw dans le champ app_name ?
+
+GET /hol_devoxxfr_mq/_search
+{
+  "query": 
+  {"match": {
+    "app_name": "draw"
+  }}
+}
+
+
+
+
+
+
+# 3.1.2 Comprendre le score - recherche d’un terme unique
+# Comment se décompose le score du premier document trouvé pour la requête précédente match query ?
+GET /hol_devoxxfr_mq/_doc/3/_explain
+{
+  "query": 
+  {"match": {
+    "app_name": "draw"
+  }}
+}
+
+
+
+
+# 0,13353139  * 1,1578947
+
+
+
+
+
+
+# 3.1.3 OR
+# Quels sont les documents qui contiennent les termes draw OU art dans le champ app_name ?
+
+GET /hol_devoxxfr_mq/_search
+{
+  "query": 
+  {
+    "match": {
+      "app_name": "draw art"
+    }
+  }
+}
+
+
+
+
+
+
+# VALIDATE
+GET /hol_devoxxfr_mq/_validate/query?rewrite
+{
+  "query": 
+  {
+    "match": {
+      "app_name": "draw art"
+    }
+  }
+}
+
+
+
+
+
+# 3.1.4 Comprendre le score - recherche de plusieurs termes
+# Comment se décompose le score du premier document trouvé pour la requête OR ?
+
+GET /hol_devoxxfr_mq/_doc/1/_explain
+{
+  "query": 
+  {
+    "match": {
+      "app_name": "draw art"
+    }
+  }
+}
+
+
+
+
+# 0,11750762 + 0,86312973
+
+
+
+
+
+
+
+# 3.1.5 AND
+# Quels sont les documents qui contiennent les termes draw ET art dans le champ app_name ?
+GET /hol_devoxxfr_mq/_search
+{
+  "query": 
+  {
+    "match": {
+      "app_name": 
+      {
+        "query": "draw art",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+
+
+
+
+
+# VALIDATE
+GET /hol_devoxxfr_mq/_validate/query?rewrite
+{
+  "query": 
+  {
+    "match": {
+      "app_name": 
+      {
+        "query": "draw art",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+
+
+
+# Corrigé : git checkout step-221-solution
+
+
+
+####################################
+# 2.2.2 Recherches multichamps - un texte spécifique à chaque champ
+####################################
+
+
+# Poster les données ci-dessous :
+POST /hol_devoxxfr_mf1/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"app_name" : "draw pixel art number", "genres" : "Art & Design;Creativity"}
+{ "index": { "_id": 2 }}
+{"app_name" : "draw pixel number", "genres" : "Art & Design"}
+{ "index": { "_id": 3 }}
+{"app_name" : "draw figure", "genres" : "Art & Design"}
+
+
+# Quels sont les documents qui contiennent
+## le terme draw dans le champ app_name
+## OU
+## le terme art dans le champ genres
+GET /hol_devoxxfr_mf1/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match": {"app_name": "draw"}},
+        {"match": {"genres": "art"}}        
+      ]
+    }
+  }
+}
+
+
+
+
+# Corrigé git checkout step-222-solution
+
+
+
+
+################################################################
+# 2.2.3 Recherches multichamps - un texte commun à tous les champs
+################################################################
+
+
+
+# 2.2.3.1 Recherches de type booléen
+################################################################
+# Effectuer la même recherche que précédemment en appliquant ce principe : 
+# termes art ou draw dans les champs genres ou app_name
+
+GET /hol_devoxxfr_mf1/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match": {"app_name": "draw art"}},
+        {"match": {"genre": "draw art"}}        
+      ]
+    }
+  }
+}
+
+
+
+
+
+# 2.2.3.2 Effets de bord du mode précédent
+################################################################
+# Pour comprendre cet exercice, poster les données ci-dessous
+DELETE  /hol_devoxxfr_mf2
+
+
+POST /hol_devoxxfr_mf2/_doc/_bulk
+{ "index": { "_id": 1 }}
+{"genres" : "Entertainment", "app_name" : "Pixel Draw Art filter for selfies"}
+{ "index": { "_id": 2 }}
+{"genres" : "Art", "app_name" : "Pixel Draw"}
+
+
+# Effectuer une requête de type booléen identique à la précédente pour rechercher  la chaîne “draw art”. 
+
+GET /hol_devoxxfr_mf2/_search
+{
+  "query": 
+  {
+    "bool": 
+    {
+      "should": 
+      [
+        {"match": {"app_name": "draw art"}},
+        {"match": {"genres": "draw art"}}
+      ]
+    }
+  }
+}
+
+
+
+
+# Qu'en pensez vous ?
+
+
+
+
+
+
+
+# 2.2.3.3 Recherches de type Dismax
+################################################################
+
+# Effectuer une requête de type dismax pour rechercher  la chaîne “draw art”. 
+GET /hol_devoxxfr_mf2/_search
+{
+  "query": 
+  {
+    "dis_max": {
+      "queries": 
+      [
+        {"match": {"app_name": "draw art"}},
+        {"match": {"genres": "draw art"}}        
+      ]
+    }
+  }
+}
+
+
+
+
+
+
+# 2.2.3.4 Recherches de type Dismax  - effet de bord  
+################################################################
+
+POST /hol_devoxxfr_mf3/_doc/_bulk
+{ "index": { "_id": 1 }} 
+{"genres" : "Art", "app_name" : "Pixel Draw Number"}
+{ "index": { "_id": 2 }}
+{"genres" : "Entertainment", "app_name" : "Pixel Draw Art number"}
+
+
+# Exécuter une requête de type Dismax sur les deux champs de l’index pour rechercher la chaîne "entertainment art". 
+GET hol_devoxxfr_mf3/_search
+{
+  "query": 
+  {
+    "dis_max": {
+      "queries": 
+      [
+        {"match": {"app_name": "entertainment art"}},
+        {"match": {"genres": "entertainment art"}}        
+      ]
+    }
+  }
+}
+
+
+
+# Que pensez vous de la nature de la réponse ?
+
+
+
+
+
+
+# 2.2.3.5 Recherches de type Dismax avec tiebreaker
+################################################################
+
+
+# Ajouter le paramètre tie_breaker à la requête précédente avec une valeur de 0.3
+GET hol_devoxxfr_mf3/_search
+{
+  "query": 
+  {
+    "dis_max": {
+      "queries": 
+      [
+        {"match": {"app_name": "entertainment art"}},
+        {"match": {"genres": "entertainment art"}}        
+      ],
+      "tie_breaker": 0.3
+    }
+  }
+}
+
+
+
+
+
+
+# 2.2.3.6 Comprendre le score du mode Dismax
+################################################################
+# Décomposer le score du premier document trouvé ?
+
+GET hol_devoxxfr_mf3/_doc/2/_explain
+{
+  "query": 
+  {
+    "dis_max": {
+      "queries": 
+      [
+        {"match": {"app_name": "entertainment art"}},
+        {"match": {"genres": "entertainment art"}}        
+      ],
+      "tie_breaker": 0.3
+    }
+  }
+}
+
+
+
+
+
+#  (0,6548752 * 0,3) + 0.6931472 = 0.88
+
+
+
+
+
+
+
+
+
+# 2.2.3.7  Queries de type Multimatch
+################################################################
+# Ré-écrivez la requête précédente en mode multimatch
+
+GET /hol_devoxxfr_mf3/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "query": "entertainment art",
+      "fields": ["app_name","genres"],
+      "tie_breaker": 0.3
+    }
+  }
+}
+
+
+
+
+
+
+
+# 2.2.3.8 Multimatch avec pondération de champs
+################################################################
+
+# D’un point de vue métier, le champ app_name est considéré comme beaucoup plus important pour les recherches que tous les autres champs du document
+# Comment faire pour donner à ce champ une pondération plus importante ?
+
+GET /hol_devoxxfr_mf3/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "query": "entertainment art",
+      "fields": ["app_name^4","genres^0.2"],
+      "tie_breaker": 0.3
+    }
+  }
+}
+
+
+
+
+
+# Corrigé : git checkout  step-223-solution
+
+
+
+
+################################################################
+# 2.3 Proximité 
+################################################################
+
+# 2.3.1 Phrase match <OPTIONAL>
+################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################
+# 2.4 Partial matching
+################################################################
+
+
+# 2.4.1 Chargement du jeu d’essai
+################################################################
+
+# git checkout step-241
+# ./data/post-data-1-curl.sh
+
+
+
+
+# 2.4.2 Partial matching sans modification de l’indexation
+##################################
+
+
+
+
+
+
+
+
+
+
+# 2.4.2.1 Prefix query
+##################################
+# En vous aidant de la documentation en ligne, trouver tous les pays dont le champ country commence par la chaîne “Ba”.
+GET /hol_devoxxfr_pm1/_search
+{
+  "query": 
+  {
+    "prefix": {
+      "country": {
+        "value": "Ba"
+      }
+    }
+  }
+}
+
+
+
+GET /hol_devoxxfr_pm1/_validate/query?explain
+{
+  "query": 
+  {
+    "prefix": {
+      "country": {
+        "value": "Ba"
+      }
+    }
+  }
+}
+
+
+
+
+
+# 2.4.2.2 Regexp query
+##################################
+# En vous aidant de la documentation en ligne, trouver tous les pays dont le champ country contient la chaîne “Repu”.
+GET /hol_devoxxfr_pm1/_search
+{
+  "query": 
+  {
+    "regexp": {
+      "country": ".*Repu.*"
+    }
+  }
+}
+
+
+GET /hol_devoxxfr_pm1/_validate/query?explain
+{
+  "query": 
+  {
+    "regexp": {
+      "country": "Repu"
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+# 2.4.2.3 match_phrase_prefix
+##################################
+
+# En vous aidant de la documentation en ligne pour la syntaxe, trouver les documents dont le champ country commence par cong.
+GET /hol_devoxxfr_pm1/_search
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "cong"
+    }
+  }
+}
+
+
+
+# Si vous avez chargé le jeu d’essais avec les scripts qui vous ont été procurés, la recherche devrait être infructueuse. Pourquoi ?
+
+
+# VALIDATE
+GET /hol_devoxxfr_pm1/_validate/query?explain
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "cong"
+    }
+  }
+}
+
+
+
+
+
+
+# Créer un autre index hol_devoxxfr_pm2 avec le bon mapping et recharger les données. 
+# git checkout step-242
+# ./data/post-data-2-curl.sh 
+
+
+
+
+# Refaites la requête sur l’index hol_devoxxfr_pm2
+
+GET /hol_devoxxfr_pm2/_search
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "Domi Republic"
+    }
+  }
+}
+
+
+
+# VALIDATE
+GET /hol_devoxxfr_pm2/_validate/query?explain
+{
+  "query": 
+  {
+    "match_phrase_prefix": {
+      "country": "cong"
+    }
+  }
+}
+
+
+
+
+
+# Si vous lisez attentivement la documentation en ligne, vous remarquerez que ce type de recherche est qualifié de search_as_you_type du pauvre ! La préconisation est plutôt d’utiliser un completion suggester ou un index-time-search-as-you-type. Ce dernier sera l’objet de l’exercice suivant.
+
+# Corrigé : git checkout step-242-solution
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 2.4.3 Partial matching avec modification de l’indexation : edge-ngrams
+##################################
+
+# En vous aidant de la documentation en ligne, créez un index de type index-time-search-as-you-type que vous appellerez hol_devoxxfr_pm3
+
+
+PUT hol_devoxxfr_pm3
+{
+  "settings": 
+  {
+    "analysis": 
+    {
+      "filter": 
+      {
+        "ac_filter" : 
+        {
+          "type" : "edge_ngram",
+          "min_gram" : 1,
+          "max_gram" : 20
+        }
+      },
+      "analyzer": 
+      {
+        "ac_analyzer" : 
+        {
+          "type" : "custom",
+          "tokenizer" : "standard",
+          "filter" :
+          [
+            "lowercase",
+            "ac_filter"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": 
+  {
+    "_doc" : 
+    {
+      "properties" : 
+      {
+        "code" : {"type": "keyword"},
+        "country" : 
+        {
+          "type" : "keyword",
+          "fields" : 
+          {
+            "autocomplete" : 
+            {
+              "type" : "text",
+              "analyzer" : "ac_analyzer",
+              "search_analyzer" : "standard"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+# Chargez les données dans l’index nouvellement créé.
+# git checkout step-243-solution
+# $HOME/elastic/hol-elastic-devoxxfr/data/post-data-3-curl.sh
+
+
+# Faire un analyze
+GET /hol_devoxxfr_pm3/_analyze
+{
+  "text" : "republic",
+  "field": "country.autocomplete"
+}
+
+
+
+
+
+
+# Testez le nouvel index en cherchant le token “rep”
+GET hol_devoxxfr_pm3/_search
+{
+  "query": 
+  {
+    "match": {
+      "country.autocomplete": "demo"
+    }
+  }
+}
+
+
+
+
+
+
+
+# Corrigé : git checkout step-243-solution
+
+
+
+
+################################################################
+# 3.6 Spécificités du langage
+################################################################
+# Index de travail hol_devoxxfr_filter
+
+
+
+################################################################
+# 3.6.1 Les utilisateurs n’en font qu’à leur tête !
+
+# Faites une requête de type match sur le champ app_name pour la chaîne photos.
+GET /hol_devoxxfr_filter/_search
+{
+  "query": 
+  {
+    "match": {
+      "app_name": "photos"
+    }
+  }
+}
+
+
+
+
+
+
+
+# Cette requête ne permet de trouver aucun document. Pourquoi (réponse argumentée avec l’outillage mis à disposition par Elasticsearch) ?
+GET /hol_devoxxfr_filter/_analyze
+{
+  "text": ["photos"],
+  "field": "app_name"
+}
+
+
+
+
+
+
+
+
+### Qu'a ton dans l'index ?
+GET /hol_devoxxfr_filter/_search
+
+
+
+
+# Quel test pourrait-on faire pour trouver un ou des analyzers adéquats sans indexation de données (réponse argumentée avec l’outillage mis à disposition par Elasticsearch)?
+
+GET /hol_devoxxfr_filter/_analyze
+{
+  "text": ["photos"],
+  "analyzer": "english"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################
+# 3.6.2  Création d’un index personnalisé
+
+# Créer l’index de nom hol_devoxxfr_lang1 avec le mapping ci-dessous :
+## app_name
+### type : text
+### Sous-champ fields
+#### Nom : english
+#### Type : text
+#### analyzer : english
+## genres
+## type : text
+### Sous-champ fields
+#### Nom : english
+#### Type : text
+#### analyzer : english
+
+
+PUT hol_devoxxfr_lang1
+
+PUT hol_devoxxfr_lang1/_mappings/_doc
+{
+  "properties" : 
+  {
+    "app_name" : 
+    {
+      "type"  : "text",
+      "fields" : 
+      {
+        "english" : {
+          "type" : "text",
+          "analyzer" : "english"
+        }
+      }
+    },
+    "genres" : 
+    {
+      "type"  : "text",
+      "fields" : 
+      {
+        "english" : {
+          "type" : "text",
+          "analyzer" : "english"
+        }
+      }
+    }    
+  }
+    
+}
+
+
+
+
+
+
+
+################################################################
+# 3.6.3  Ajout de données
+# Indexer les données de l’exercice  2.2 dans l’index hol_devoxxfr_lang1. 
+
+# git checkout step-250-solution
+# $HOME/elastic/hol-elastic-devoxxfr/data/post-data-curl.sh
+
+
+
+
+
+
+
+
+
+
+
+################################################################
+# 3.6.4  Requêtes
+
+# Faites une requête de type multimatch bestfields uniquement sur le champ app_name pour rechercher la chaîne photos.  
+#  Index hol_devoxxfr_lang1
+GET /hol_devoxxfr_lang1/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "query": "photos",
+      "fields": ["app_name"]
+    }
+  }
+}
+
+
+
+
+
+# Que constatez vous ? 
+
+# Qu’est-il possible de faire pour augmenter le recall de cette requête ? 
+GET /hol_devoxxfr_lang1/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "query": "photos",
+      "fields": ["app_name","app_name.english"]
+    }
+  }
+}
+
+GET /hol_devoxxfr_lang1/_analyze
+{
+  "text": ["photos"],
+  "field": "app_name.english"
+}
+
+
+
+
+GET /hol_devoxxfr_lang1/_search
+{
+  "query": 
+  {
+    "multi_match": {
+      "query": "photos",
+      "fields": ["app_name","app_name.english"]
+    }
+  }
+}
+
+
+
+
+
+################################################################
+# 4 - Cas d’utilisation Google Play Store
+################################################################
+
+# Chargement Logstash /hol_devoxxfr_gstore_v1
+
+
+
+# git checkout step-310
+
+# #  ls -al $HOME/elastic/hol-elastic-devoxxfr/data/
+
+#  vi $HOME/elastic/hol-elastic-devoxxfr/data/ls-google-playstore.conf 
+
+# sudo ln -s /Users/zouheir/elastic/ /tp-elastic
+
+# $HOME/elastic/logstash/6.6.0/bin/logstash -f /tp-elastic/hol-elastic-devoxxfr/data/ls-google-playstore.conf 
+
+GET /hol_devoxxfr_gstore_v1
+GET hol_devoxxfr_gstore_v1/_count
+GET hol_devoxxfr_gstore_v1/_search
+
+
+
+
+
